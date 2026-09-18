@@ -4,7 +4,7 @@ Status: implemented for review. Date: 2026-09-18.
 
 ## Context
 
-This portfolio must make evidence easy to inspect while preserving an editorial identity. Content is owner-authored, deployment is static, professional facts are incomplete, and Actions are paused.
+This portfolio must make evidence easy to inspect while preserving an editorial identity. Content is owner-authored, deployment is static, professional facts are incomplete, and Actions were initially paused. The execution policy is now superseded by [decision 0003](0003-self-hosted-ci.md).
 
 ## Decisions
 

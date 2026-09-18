@@ -66,7 +66,7 @@ Do not rename it without Martin's approval. The default Pages project-site base 
 
 The project should be designed for free deployment through **GitHub Pages**.
 
-Current deployment target (not yet published):
+Approved preview deployment target (live status is recorded in `docs/STATUS.md`):
 
 `https://martin-tahli.github.io/martin-tahli/`
 
@@ -83,7 +83,7 @@ Preferred stack:
 - Tailwind CSS
 - MDX
 - GitHub Pages
-- GitHub Actions for eventual, explicitly authorized deployment; paused during development
+- GitHub Actions on owner-provided self-hosted runners for routine verification and deployment; see `AGENTS.md` and `docs/decisions/0003-self-hosted-ci.md`
 
 React may be used only where interactive components genuinely benefit from it.
 
@@ -972,7 +972,7 @@ Create:
 - formatting
 - sensible TypeScript configuration
 - clean Git history going forward
-- documented deployment procedure; no active Actions workflows during development
+- documented self-hosted verification and automatic Pages deployment after successful checks on `main`
 
 Suggested architecture:
 
@@ -1134,7 +1134,7 @@ Establish:
 - repository
 - Astro project
 - architecture
-- deployment configuration (activation deferred)
+- deployment after successful self-hosted verification
 - design system
 - typography
 - responsive shell

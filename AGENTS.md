@@ -1,21 +1,22 @@
 # Agent development contract
 
-## GitHub Actions policy
+## GitHub Actions and runner policy
 
-Owner decision: 2026-09-18. Routine GitHub Actions remain paused during development.
+Owner decision: 2026-09-18. Martin removed the development pause after providing self-hosted runners and authorized merging and deploying the portfolio preview. This supersedes the earlier paused-Actions and manual-only rules.
 
-- Prefer the local runtime for dependency installation, formatting, linting, type checks, builds, tests, and browser checks.
-- Do not enable routine push, PR, or schedule triggers. Keep future workflow templates outside `.github/workflows/` until approved.
-- Repository reads, feature branches, commits, and reviews do not require Actions.
-- The owner requested an initial public Pages preview and authorized the required PR merge. The bounded connected verification exception is documented in `docs/decisions/0002-preview-publication.md` and has completed. Its temporary workflow is removed; do not recreate the operations-branch trigger for routine development.
-- The retained `pages.yml` is manual-only, gated on `main`, and runs release checks before publishing normal `dist` output. Do not deploy synthetic fixture output. Re-enabling automatic CI requires explicit approval.
-- Do not use Actions as a general remote shell, regenerate dependencies repeatedly there, or create self-committing bootstrap jobs.
-- State a genuine local blocker and narrow purpose before any necessary exceptional run. Group fixes before retrying; use least privilege, timeouts, and short artifact retention.
-- A missing capability does not make a check pass. Report unverified checks explicitly and do not weaken verification gates.
+- Actions may run routinely for verification and deployment. No exceptional local blocker or per-run approval is required for the approved portfolio workflow.
+- Route every job to `self-hosted`; do not silently fall back to GitHub-hosted runners. Inspect job results to confirm a runner actually accepted the work.
+- `.github/workflows/pages.yml` verifies owner-controlled pushes to `main`, `feat/**`, `fix/**`, `chore/**`, and `docs/**`, and supports manual execution. Only successful `main` runs publish.
+- Never execute external pull-request code on the local machines. Do not add `pull_request`, `pull_request_target`, issue/comment, or untrusted artifact execution triggers. Review external contributions before incorporating them into an owner-controlled branch.
+- Keep the exact repository and owner/initiator checks, read-only source permissions, commit-pinned actions, disabled checkout credential persistence, timeouts, and short artifact retention.
+- Treat self-hosted runners as dedicated, isolated build machines, not trusted personal workstations. Workflow conditions reduce exposure; they are not a security sandbox.
+- Install locked project dependencies and the test browser only. Do not install host system packages with sudo, inspect local credentials, or modify the runner service. Missing prerequisites must be reported explicitly.
+- Never publish `test-dist`, synthetic content, or a failed build. Preserve the full verification gates and disabled preview indexing.
+- Do not regenerate dependencies repeatedly, create self-committing jobs, or represent an unrun check as passing.
 
 ## Review and content integrity
 
-- Work through feature branches and PRs. The initial preview merge/publication is authorized; future unrelated releases, renames, domains, and settings changes still require approval.
+- Work through feature branches and PRs. The current runner-policy change, merge, and preview deployment are authorized. Unrelated changes, repository renames, custom domains, and final content/indexing approval remain separate decisions.
 - Preserve Precision Editorial — Warm Mono Hybrid and the static-first architecture.
 - Follow `MASTER_PROMPT.md`, `docs/DESIGN.md`, `docs/COMPONENTS.md`, `docs/IMPLEMENTATION.md`, the relevant page specification, then visual references.
 - The root README is the public GitHub profile; setup and development instructions live in `docs/DEVELOPMENT.md`.
