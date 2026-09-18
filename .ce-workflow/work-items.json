@@ -97,6 +97,10 @@
       "dependencies": [],
       "dependencyEdges": [],
       "description": "Homepage-foundation iteration scoped by brainstorm work-1.1 (docs/brainstorms/2026-09-18-martin-tahli-portfolio-homepage-foundation.md) and docs/designs/2026-09-18-martin-tahli-portfolio-master-development-prompt/DESIGN-BRIEF.md, with gaps recorded in CURRENT-UI-AUDIT.md in the same folder. An implementation diff is already in progress and uncommitted in the working tree (tokens.css header-height/content-width/section-space tokens; SiteHeader.astro mobile-menu open/rotate animation and desktop nav spacing; index.astro hero-visual sand-field framing, tablet 60rem breakpoint, mobile edge-to-edge visual region; global.css heading rhythm and link hover motion). This task owns finishing that diff to close the audit's recorded 'Reconsider' gaps and running the full verification contract. Do not touch unrelated pages, do not add new dependencies/CMS/hydrated components, do not crop or publish the reference board as production imagery, and do not fabricate CV/project/metric content.",
+      "displayMetadata": {
+        "schemaVersion": 1,
+        "title": "Finish and verify homepage header and hero polish"
+      },
       "evidence": [
         {
           "artifacts": [],
@@ -180,6 +184,10 @@
       ],
       "dependencyEdges": [],
       "description": "DESIGN-BRIEF.md and the work-1.1 brainstorm both state that selecting the systems-diagram hero direction does not pre-approve its rendered execution: 'Martin approves the rendered header/hero composition against the reference; selecting the systems diagram direction does not pre-approve its execution.' This decision item tracks that outstanding human/product approval gate. It is downstream of implementation, not a precondition for starting it.",
+      "displayMetadata": {
+        "schemaVersion": 1,
+        "title": "Approve rendered header and hero composition"
+      },
       "evidence": [
         {
           "artifacts": [
@@ -267,7 +275,7 @@
   },
   "metadata": {
     "createdAt": "2026-09-18T18:03:52.465Z",
-    "updatedAt": "2026-09-18T20:00:22.788Z"
+    "updatedAt": "2026-09-18T20:07:36.332Z"
   },
   "schemaVersion": 1
 }
