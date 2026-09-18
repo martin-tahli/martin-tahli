@@ -14,6 +14,20 @@ Provide a dedicated, isolated runner with a current GitHub runner service, Git, 
 
 No external pull-request event executes this pipeline. Exact repository and owner/initiator checks further restrict execution. This reduces exposure but does not isolate malicious dependencies or owner-approved code; repository/workflow review and runner isolation remain necessary.
 
+## First-run prerequisite failure
+
+The registered `martin-tahli-ci-runner` accepted the job, installed the locked dependencies, and built the static site. Chromium startup failed with `libnspr4.so` missing. See [run 35355333153](https://github.com/martin-tahli/martin-tahli/actions/runs/35355333153). A successful browser binary download does not install Linux shared-library dependencies.
+
+Provision these dependencies once in the **same dedicated runner environment** where the workflow executes. From its repository checkout with the pinned Node toolchain and `npm ci` completed, run as the runner image/container's provisioning administrator:
+
+```sh
+npx playwright install-deps chromium
+```
+
+This command changes OS packages, so it belongs in controlled runner provisioning, not an application workflow with elevated host access. For a containerized runner, bake the setup into its image and recreate the runner; installing only on the outer host will not fix missing libraries inside the container. Do not assume the GitHub runner name is the Docker container name. See [Playwright browser prerequisites](https://playwright.dev/docs/browsers#install-system-dependencies).
+
+After provisioning, the workflow downloads the version-matched browser and runs `node scripts/check-browser.mjs`. This opens and closes Chromium once before the complete suites, failing clearly when the runtime is still unusable. It does not bypass any test.
+
 ## One-time Pages activation
 
 In repository **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. The connector used to maintain this repository exposes code/PR operations, not Pages administration. The default workflow token can publish to an enabled Pages site but is not a substitute for the initial activation permission. Do not paste a personal access token into chat or hard-code one into a workflow.

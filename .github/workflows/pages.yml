@@ -38,8 +38,6 @@ jobs:
       github.triggering_actor == github.repository_owner
     runs-on: self-hosted
     timeout-minutes: 20
-    env:
-      PLAYWRIGHT_BROWSERS_PATH: ${{ runner.temp }}/portfolio-playwright
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -53,10 +51,15 @@ jobs:
           printf 'Runner: %s / %s\n' "$RUNNER_OS" "$RUNNER_ARCH"
           node --version
           npm --version
+          printf 'PLAYWRIGHT_BROWSERS_PATH=%s/portfolio-playwright\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
       - name: Install locked dependencies
         run: npm ci
+      - name: Verify formatting, lint, types, and unit contracts
+        run: npm run format:check && npm run lint && npm run check && npm test
       - name: Install Chromium without changing host system packages
         run: npx playwright install chromium
+      - name: Check browser runtime prerequisites
+        run: node scripts/check-browser.mjs
       - name: Verify the alternate root deployment
         env:
           SITE_BASE: /

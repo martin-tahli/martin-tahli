@@ -4,7 +4,13 @@ Date: 2026-09-18. The owner authorized preview publication, merge, and now routi
 
 ## Current deployment checkpoint
 
-The Actions pause is removed and the self-hosted verification/publication pipeline is being introduced. Application source is unchanged from the verified preview. Runner execution, the policy PR merge, Pages configuration, and live HTTP checks must each be confirmed before claiming success. At the last repository read, Pages was disabled. Follow `docs/DEPLOYMENT.md` for the one-time activation.
+The owner-approved Actions policy was merged in PR #2. Every job now targets `self-hosted`; there is no hosted fallback. A workflow-context error from the initial change is corrected in PR #3. Application source and locked dependencies are unchanged from the verified preview.
+
+[Self-hosted run 35355333153](https://github.com/martin-tahli/martin-tahli/actions/runs/35355333153) was accepted by `martin-tahli-ci-runner` (Linux/X64), using Node 22.23.2 and npm 10.9.8. Locked dependency installation, browser download, and the alternate root static build succeeded. Chromium could not start because the runner environment lacks `libnspr4.so`; the browser suite failed at launch and deployment did not run. This is not a successful browser verification. Other required OS libraries may also be missing; provision the complete Playwright Chromium dependency set, not just the first reported library.
+
+The follow-up adds one browser startup preflight before the suites and runs formatting, lint, types, and unit contracts before browser setup. Its local dependency-free suite passes 82 tests; remote execution remains a separate check. The failure gate is not removed.
+
+At the latest repository read GitHub Pages was still disabled. The preview is **not live**. Both runner provisioning and Pages activation must be completed before a full successful run can publish. Instructions are in `docs/DEPLOYMENT.md`; actual workflow results take precedence over this dated checkpoint.
 
 ## Implemented
 
