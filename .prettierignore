@@ -4,6 +4,7 @@ dist/
 package-lock.json
 playwright-report/
 test-results/
+.ce-workflow/
 # Approved source documents retain their original formatting.
 MASTER_PROMPT.md
 docs/DESIGN.md

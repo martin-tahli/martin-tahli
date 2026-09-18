@@ -82,4 +82,4 @@ When implementing a page:
 
 ## Repository transfer status
 
-The supplied original board was inspected in the project workspace. Its binary is not yet committed in this text-only transfer; `reference/README.md` records the original digest and transfer requirement. Visual acceptance remains pending until the original is available alongside actual browser captures.
+The supplied original board is stored at `reference/precision-editorial-warm-mono-reference.png`; `reference/README.md` records its original digest. Visual acceptance remains a separate owner decision based on the board and actual browser captures.
