@@ -83,3 +83,11 @@ test('runner host packages and services are not modified', () => {
   assert.match(verify, /run: npx playwright install chromium/);
   assert.equal(workflow.match(/timeout-minutes:/g)?.length, 2);
 });
+
+// Runner context is unavailable in job-level env; resolve it in a running step.
+test('runner paths are resolved after a runner has accepted the job', () => {
+  const jobConfiguration = verify.split('    steps:')[0];
+  assert.doesNotMatch(jobConfiguration, /\$\{\{\s*runner\./);
+  assert.match(verify, /PLAYWRIGHT_BROWSERS_PATH=%s\/portfolio-playwright/);
+  assert.match(verify, /"\$RUNNER_TEMP" >> "\$GITHUB_ENV"/);
+});
