@@ -31,9 +31,10 @@ test('only branch pushes and manual runs trigger the pipeline', () => {
 });
 
 test('every job uses self-hosted execution without a hosted fallback', () => {
-  const runners = [...workflow.matchAll(/^    runs-on: (.+)$/gm)];
+  const runners = [...workflow.matchAll(/^ {4}runs-on: (.+)$/gm)];
   assert.equal(runners.length, 2);
-  for (const match of runners) assert.equal(match[1], 'self-hosted');
+  for (const match of runners)
+    assert.match(match[1] ?? '', /^\[self-hosted(,|\])/);
 });
 
 test('verification is restricted to the exact repository and owner', () => {
@@ -71,7 +72,7 @@ test('all external actions are pinned to full commit hashes', () => {
   const actions = [...workflow.matchAll(/uses: ([^\s]+)(?:\s|$)/g)];
   assert.ok(actions.length >= 5);
   for (const match of actions) {
-    assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
+    assert.match(match[1] ?? '', /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
   }
 });
 
@@ -86,7 +87,7 @@ test('runner host packages and services are not modified', () => {
 
 // Runner context is unavailable in job-level env; resolve it in a running step.
 test('runner paths are resolved after a runner has accepted the job', () => {
-  const jobConfiguration = verify.split('    steps:')[0];
+  const jobConfiguration = verify.split('    steps:')[0] ?? '';
   assert.doesNotMatch(jobConfiguration, /\$\{\{\s*runner\./);
   assert.match(verify, /PLAYWRIGHT_BROWSERS_PATH=%s\/portfolio-playwright/);
   assert.match(verify, /"\$RUNNER_TEMP" >> "\$GITHUB_ENV"/);
