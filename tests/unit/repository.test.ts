@@ -11,8 +11,6 @@ test('workflows require an explicit preview or deployment request', () => {
     : [];
   const approvedEvents: Record<string, string> = {
     'pages.yml': '  workflow_dispatch:',
-    'preview-check.yml':
-      '  push:\n    branches: [ops/preview-check]\n  workflow_dispatch:',
   };
   for (const name of files) {
     assert.ok(name in approvedEvents, `Unapproved workflow: ${name}`);

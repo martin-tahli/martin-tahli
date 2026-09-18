@@ -115,8 +115,10 @@ A page is not done until:
 - there are no obvious template/AI-portfolio clichés
 
 
-## 8. Owner decision — local-first development (2026-09-18)
+## 8. Owner decisions — local-first development and initial preview (2026-09-18)
 
-GitHub Actions remain paused. Run dependency installation, formatting, linting, type checks, tests, builds and browser checks locally. Do not add workflows under `.github/workflows/` during development. Preserve manual-only templates outside that directory if needed. Use Actions only for a necessary final step that cannot be completed locally, explain the blocker first, and obtain explicit approval before enabling automatic triggers. See `AGENTS.md`. Unrun checks remain unverified.
+Routine automatic GitHub Actions remain paused. Run dependency installation, formatting, linting, type checks, tests, builds and browser checks locally wherever possible. Do not add push, pull-request, or schedule triggers. Unrun checks remain unverified.
 
-The working repository is `martin-tahli/martin-tahli`; until a different release target is approved, test the site at `/martin-tahli/` as well as `/`. Never hard-code the deployment prefix inside components.
+Martin subsequently authorized an initial public Pages preview and the necessary PR merge. A bounded connected verification exception was used because the editing runtime cannot resolve npm/GitHub hosts. It has completed successfully; its temporary workflow is removed. The retained `pages.yml` is manual-only and requires successful release checks before deploying normal `dist` output. Do not recreate the operations-branch trigger for ordinary development. See `AGENTS.md`, `docs/decisions/0002-preview-publication.md`, and `docs/STATUS.md`.
+
+The approved preview target is `https://martin-tahli.github.io/martin-tahli/`. Keep indexing disabled while the preview is under review. Test the site at `/martin-tahli/` as well as `/`; never hard-code the deployment prefix inside components. The root README is the short profile introduction; engineering setup instructions live in `docs/DEVELOPMENT.md`.
