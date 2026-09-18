@@ -134,22 +134,94 @@
       ],
       "dependencyEdges": [],
       "description": "DESIGN-BRIEF.md and the work-1.1 brainstorm both state that selecting the systems-diagram hero direction does not pre-approve its rendered execution: 'Martin approves the rendered header/hero composition against the reference; selecting the systems diagram direction does not pre-approve its execution.' This decision item tracks that outstanding human/product approval gate. It is downstream of implementation, not a precondition for starting it.",
-      "evidence": [],
+      "evidence": [
+        {
+          "artifacts": [
+            {
+              "inline": true,
+              "kind": "result",
+              "sha256": "55b25dedc8fd5fbe29b5f5945292ed881e45976c7c6e2cc19bcbf0016e1c0a88"
+            }
+          ],
+          "capability": "inspection",
+          "contractHash": "3b6c2e52fa22bd3de3204405ac28ff6ea290f6a5ab5380fa5c07a772dcf4a3ad",
+          "id": "legacy-inspection",
+          "inspection": {
+            "by": "human",
+            "summary": "Owner visual verdict: APPROVED rendered header/hero composition; authorized PR #7 merge and preview deployment."
+          },
+          "issuer": {
+            "id": "martin-tahli",
+            "type": "human"
+          },
+          "kind": "verification-proof",
+          "proof": "approval",
+          "recordedAt": "2026-09-18T19:53:24.875Z",
+          "status": "PASS",
+          "targetRevision": "workspace-sha256:d7fd5408f5ce1f284c293a93be9130e920ba83dcf493f0e4362a2ee4abc14443"
+        },
+        {
+          "artifacts": [
+            {
+              "inline": true,
+              "kind": "result",
+              "sha256": "55b25dedc8fd5fbe29b5f5945292ed881e45976c7c6e2cc19bcbf0016e1c0a88"
+            }
+          ],
+          "capability": "inspection",
+          "contractHash": "3b6c2e52fa22bd3de3204405ac28ff6ea290f6a5ab5380fa5c07a772dcf4a3ad",
+          "id": "legacy-inspection",
+          "inspection": {
+            "by": "goal",
+            "summary": "Recorded the owner's explicit visual verdict: APPROVED rendered header/hero composition; merge and preview deployment authorized."
+          },
+          "issuer": {
+            "id": "01a0b5dd-c525-7618-9785-3b928cead193",
+            "type": "goal"
+          },
+          "kind": "verification-proof",
+          "proof": "approval",
+          "recordedAt": "2026-09-18T19:53:32.440Z",
+          "status": "PASS",
+          "targetRevision": "workspace-sha256:d7fd5408f5ce1f284c293a93be9130e920ba83dcf493f0e4362a2ee4abc14443"
+        },
+        {
+          "closeEvidence": "Completed by coded inline work path"
+        }
+      ],
       "id": "work-1.3",
       "labels": [],
       "notes": [
-        "Depends on work-1.2 (implementation + capture evidence) being done first. Do not implement product code from this decision item; it only records the owner's visual verdict."
+        "Depends on work-1.2 (implementation + capture evidence) being done first. Do not implement product code from this decision item; it only records the owner's visual verdict.",
+        "Owner decision 2026-09-18: APPROVED rendered desktop/tablet/mobile header and hero composition; authorized merge of PR #7 and preview deployment."
       ],
       "parentId": "work-1",
-      "status": "open",
+      "status": "closed",
       "title": "Owner visual acceptance of rendered header/hero composition",
       "type": "decision",
-      "updatedAt": "2026-09-18T18:57:53.616Z"
+      "updatedAt": "2026-09-18T19:53:37.432Z",
+      "verificationContract": {
+        "required": [
+          {
+            "artifacts": [
+              "result"
+            ],
+            "capability": "inspection",
+            "id": "legacy-inspection",
+            "inspection": "goal",
+            "instructions": "Inspect the completed legacy WorkItem outcome and record a revision-bound summary.",
+            "proof": "approval",
+            "source": "Martin reviews representative desktop/tablet/mobile captures (produced by work-1.2) against reference/precision-editorial-warm-mono-reference.png and explicitly approves, requests changes, or rejects the rendered header/hero composition. Close this item only once that explicit response is recorded."
+          }
+        ],
+        "version": 1
+      },
+      "verificationRevision": "workspace-sha256:d7fd5408f5ce1f284c293a93be9130e920ba83dcf493f0e4362a2ee4abc14443"
     }
   },
   "metadata": {
     "createdAt": "2026-09-18T18:03:52.465Z",
-    "updatedAt": "2026-09-18T19:14:05.645Z"
+    "updatedAt": "2026-09-18T19:53:37.432Z"
   },
   "schemaVersion": 1
 }
