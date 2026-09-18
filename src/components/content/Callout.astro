@@ -1,0 +1,29 @@
+---
+interface Props {
+  kind: 'Decision' | 'Tradeoff' | 'Failure mode' | 'Observation' | 'Result';
+  title?: string;
+}
+const { kind, title } = Astro.props;
+---
+
+<aside class="callout" aria-label={kind}>
+  <p class="eyebrow">{kind}</p>
+  {title && <p class="callout-title">{title}</p>}
+  <div>
+    <slot />
+  </div>
+</aside>
+<style>
+  .callout {
+    padding: 1.25rem 1.5rem;
+    border-left: 2px solid var(--terracotta);
+    background: var(--surface);
+  }
+  .callout-title {
+    margin-block: 0.75rem;
+    font-weight: 600;
+  }
+  .callout div {
+    margin-top: 0.75rem;
+  }
+</style>

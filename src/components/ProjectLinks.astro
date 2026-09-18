@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props {
+  data: CollectionEntry<'projects'>['data'];
+}
+const { data } = Astro.props;
+---
+
+<div class="actions project-links">
+  {data.liveUrl && (
+    <a class="text-link" href={data.liveUrl}>
+      Live product ↗
+    </a>
+  )}
+  {data.githubUrl && data.visibility === 'public' && (
+    <a class="text-link" href={data.githubUrl}>
+      Source code ↗
+    </a>
+  )}
+  {data.videoUrl && (
+    <a class="text-link" href={data.videoUrl}>
+      Watch demo ↗
+    </a>
+  )}
+</div>

@@ -1,0 +1,72 @@
+name: Deploy portfolio preview
+
+# Manual publication only. Routine development does not consume Actions runs.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  SITE_ORIGIN: https://martin-tahli.github.io
+  SITE_BASE: /martin-tahli/
+  SITE_INDEXABLE: 'false'
+  PORTFOLIO_TEST_CONTENT: 'false'
+  ASTRO_TELEMETRY_DISABLED: '1'
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Check that GitHub Pages is enabled
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+      - name: Verify the release candidate
+        run: npm run verify
+      - name: Reject fixture content in the publication artifact
+        run: |
+          test -s dist/index.html
+          if grep -R -E 'DO_NOT_PUBLISH_FIXTURE|Test fixture —' dist --include='*.html'; then
+            echo 'Synthetic test content cannot be published.' >&2
+            exit 1
+          fi
+      - name: Upload only the normal static build
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        with:
+          path: dist
+          retention-days: 1
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the verified preview
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

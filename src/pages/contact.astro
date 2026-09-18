@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { profile } from '../data/profile';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact and professional links for Martin Tahli."
+>
+  <div class="container">
+    <header class="page-intro">
+      <p class="eyebrow">Contact</p>
+      <h1>
+        Start with the problem.
+        <br />
+        Then talk systems.
+      </h1>
+      <p class="lede">For product, systems, and engineering conversations.</p>
+    </header>
+    <section class="contact-options" aria-label="Contact options">
+      {profile.email && (
+        <a class="contact-row" href={`mailto:${profile.email}`}>
+          <span class="eyebrow">Email</span>
+          <span>{profile.email}</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      )}
+      {profile.linkedin && (
+        <a class="contact-row" href={profile.linkedin}>
+          <span class="eyebrow">LinkedIn</span>
+          <span>Professional profile</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      )}
+      <a class="contact-row" href={profile.github}>
+        <span class="eyebrow">GitHub</span>
+        <span>martin-tahli</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  .contact-options {
+    max-width: 64rem;
+    padding-bottom: 4rem;
+  }
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr 3fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 2rem;
+    min-height: 5rem;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+  }
+  .contact-row:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-row > span:nth-child(2) {
+    font-size: clamp(1.1rem, 2vw, 1.75rem);
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 36rem) {
+    .contact-row {
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+    }
+    .contact-row .eyebrow {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

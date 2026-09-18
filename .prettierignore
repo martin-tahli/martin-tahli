@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+package-lock.json
+playwright-report/
+test-results/
+# Approved source documents retain their original formatting.
+MASTER_PROMPT.md
+docs/DESIGN.md
+docs/COMPONENTS.md
+docs/IMPLEMENTATION.md
+docs/REFERENCE_IMAGES.md
+docs/pages/
+test-dist/

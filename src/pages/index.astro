@@ -1,0 +1,288 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import SystemsFlow from '../components/SystemsFlow.astro';
+import EmptyState from '../components/EmptyState.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import NoteRow from '../components/NoteRow.astro';
+import { profile, processSteps } from '../data/profile';
+import { withBase } from '../utils/paths';
+import { getPublishedProjects, getPublishedNotes } from '../utils/content';
+const base = import.meta.env.BASE_URL;
+const projects = (await getPublishedProjects())
+  .filter(({ data }) => data.featured)
+  .slice(0, 3);
+const notes = (await getPublishedNotes()).slice(0, 3);
+---
+
+<BaseLayout
+  title="AI-Native Product & Systems Engineer"
+  description={profile.summary}
+>
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">AI-native</p>
+        <h1 id="hero-title">
+          Product &amp;
+          <br />
+          Systems Engineer<span aria-hidden="true">.</span>
+        </h1>
+        <p class="lede">{profile.summary}</p>
+        <div class="actions">
+          <a class="button" href={withBase('/work/', base)}>
+            View Work <span aria-hidden="true">→</span>
+          </a>
+          {profile.cvPdf ? (
+            <a
+              class="button secondary"
+              href={withBase(profile.cvPdf, base)}
+              download
+            >
+              Download CV
+            </a>
+          ) : (
+            <a class="button secondary" href={withBase('/contact/', base)}>
+              Contact
+            </a>
+          )}
+        </div>
+        <div class="hero-note">
+          <span aria-hidden="true"></span>
+          <p>
+            Engineering depth.
+            <br />A human perspective.
+          </p>
+        </div>
+      </div>
+      <SystemsFlow id="home-system" />
+    </section>
+
+    <section class="section" aria-label="Selected work">
+      <SectionHeading
+        number="01"
+        title="Selected work"
+        description="The problem, the architecture, and the decisions behind the build."
+        href={withBase('/work/', base)}
+        linkLabel="All work"
+      />
+      {projects.length ? (
+        projects.map((project, index) => (
+          <ProjectCard project={project} reverse={index % 2 === 1} />
+        ))
+      ) : (
+        <EmptyState
+          title="Case studies, not claims."
+          description="This space is reserved for documented work: real systems, explicit tradeoffs, and evidence of what was validated."
+          href={profile.repository}
+          linkLabel="Explore this portfolio's source"
+        />
+      )}
+    </section>
+
+    <section class="section" aria-label="How I build">
+      <SectionHeading
+        number="02"
+        title="How I build"
+        description="AI expands what I can implement. The decisions and the checks still matter."
+      />
+      <ol class="process-flow">
+        {processSteps.map((step, index) => (
+          <li>
+            <span class="eyebrow" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="process-caption">
+        Not a one-way handoff. Each validation step can send the work back to an
+        earlier decision.
+      </p>
+    </section>
+
+    {profile.capabilities.length > 0 && (
+      <section class="section" aria-label="Capabilities">
+        <SectionHeading number="03" title="Across the system" />
+        <div class="capabilities">
+          {profile.capabilities.map((capability) => (
+            <article>
+              <h3>{capability.title}</h3>
+              <p>{capability.summary}</p>
+              <ul>
+                {capability.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="section split" aria-label="About Martin">
+      <div>
+        <p class="eyebrow">A little context</p>
+        <h2 class="about-heading">
+          From the firmware
+          <br />
+          to the person using it.
+        </h2>
+      </div>
+      <div>
+        <p class="lede">{profile.background}</p>
+        <a class="text-link" href={withBase('/about/', base)}>
+          More about me <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-label="Engineering notes">
+      <SectionHeading
+        number={profile.capabilities.length ? '04' : '03'}
+        title="Engineering notes"
+        description="Useful experiments, architecture decisions, and lessons worth documenting."
+        href={withBase('/notes/', base)}
+        linkLabel="All notes"
+      />
+      {notes.length ? (
+        notes.map((note) => <NoteRow note={note} />)
+      ) : (
+        <EmptyState
+          title="Published when there is something worth documenting."
+          description="No notes are published yet. This is a place for useful engineering writing, not a posting schedule."
+        />
+      )}
+    </section>
+
+    <section class="section contact-close" aria-labelledby="contact-title">
+      <p class="eyebrow">Product / Systems / People</p>
+      <h2 id="contact-title">Start with the problem.</h2>
+      <a class="button" href={withBase('/contact/', base)}>
+        Contact <span aria-hidden="true">→</span>
+      </a>
+    </section>
+  </div>
+</BaseLayout>
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: center;
+    padding-block: clamp(4rem, 7vw, 7rem);
+    min-height: 42rem;
+  }
+  .hero-copy > .eyebrow {
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 5.65vw, 5.125rem);
+  }
+  .hero h1 span {
+    color: var(--terracotta);
+  }
+  .hero .lede {
+    margin-top: 1.75rem;
+    max-width: 45ch;
+    font-size: clamp(1.0625rem, 1.3vw, 1.125rem);
+  }
+  .hero .actions {
+    margin-top: 2rem;
+  }
+  .hero-note {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+  .hero-note > span {
+    width: 2rem;
+    height: 1px;
+    background: var(--terracotta);
+  }
+  .hero-note p {
+    font: 0.75rem/1.65 var(--font-mono);
+    color: var(--text-secondary);
+  }
+  .process-flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .process-flow li {
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+  .process-flow h3 {
+    font-size: 1.125rem;
+    margin-block: 1rem 0.75rem;
+  }
+  .process-flow p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  .process-caption {
+    margin-top: 2rem;
+    color: var(--text-secondary);
+    font: 0.75rem/1.7 var(--font-mono);
+    max-width: 75ch;
+  }
+  .about-heading {
+    margin-top: 1.5rem;
+  }
+  .contact-close h2 {
+    margin-block: 1.5rem 2rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+  }
+  @media (max-width: 60rem) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero h1 {
+      max-width: 14ch;
+    }
+    .hero .lede {
+      max-width: 60ch;
+    }
+    .hero :global(.systems-flow) {
+      max-width: 42rem;
+    }
+    .process-flow {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 36rem) {
+    .hero {
+      padding-block: 3.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 11vw, 3.375rem);
+    }
+    .hero-note {
+      margin-top: 2rem;
+    }
+    .process-flow {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .process-flow li {
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.5rem 1rem;
+      padding-top: 1rem;
+    }
+    .process-flow h3 {
+      margin: 0;
+    }
+    .process-flow p {
+      grid-column: 2;
+    }
+  }
+</style>

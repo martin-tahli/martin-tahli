@@ -1,0 +1,88 @@
+---
+import { profile, navigation } from '../data/profile';
+import { withBase } from '../utils/paths';
+const base = import.meta.env.BASE_URL;
+---
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div>
+      <a class="footer-name" href={withBase('/', base)}>
+        {profile.name}
+      </a>
+      <p>{profile.title}</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      {navigation.map(({ label, href }) => (
+        <a href={withBase(href, base)}>{label}</a>
+      ))}
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>
+      © {new Date().getFullYear()} {profile.name}
+    </span>
+    <div class="footer-links">
+      <a href={profile.github}>GitHub ↗</a>
+      {profile.linkedin && <a href={profile.linkedin}>LinkedIn ↗</a>}
+      {profile.email && <a href={`mailto:${profile.email}`}>Email ↗</a>}
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer {
+    margin-top: var(--section-space);
+    background: var(--charcoal);
+    color: var(--paper);
+    padding-block: 3.5rem 1.5rem;
+  }
+  .footer-main {
+    display: flex;
+    gap: 3rem;
+    justify-content: space-between;
+    align-items: start;
+    padding-bottom: 3rem;
+  }
+  .footer-name {
+    font: 400 2rem/1.2 var(--font-display);
+    text-decoration: none;
+  }
+  p {
+    color: var(--clay);
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+  }
+  nav,
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+  nav a,
+  .footer-links a {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+  a:hover {
+    color: var(--clay);
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--stone);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    padding-top: 1.25rem;
+    font: 0.7rem/1.6 var(--font-mono);
+    color: var(--clay);
+  }
+  @media (max-width: 48rem) {
+    .footer-main,
+    .footer-bottom {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+</style>
