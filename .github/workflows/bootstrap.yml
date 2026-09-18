@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -23,7 +23,7 @@ jobs:
           test ! -f package-lock.json
           printf '{"name":"martin-tahli-portfolio","version":"0.1.0","private":true,"type":"module","engines":{"node":">=22.12.0 <23"}}\n' > package.json
           npm install --save-exact astro@7.3.3 @astrojs/mdx @astrojs/sitemap @tailwindcss/vite tailwindcss @fontsource/instrument-serif @fontsource-variable/inter @fontsource/ibm-plex-mono
-          npm install --save-dev --save-exact typescript@6.0.3 @astrojs/check @types/node@22 @playwright/test @axe-core/playwright prettier prettier-plugin-astro eslint@9 @eslint/js@9 typescript-eslint eslint-plugin-astro globals
+          npm install --save-dev --save-exact typescript@6.0.3 @astrojs/check @types/node@22 @playwright/test @axe-core/playwright prettier prettier-plugin-astro eslint@10 @eslint/js@10 typescript-eslint eslint-plugin-astro globals
           node --version
           npm --version
           npm ls --depth=0
