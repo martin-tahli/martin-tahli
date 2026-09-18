@@ -1,0 +1,14 @@
+---
+import { profile } from '../../data/profile';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import { getPublishedProjects } from '../../utils/content';
+const projects = await getPublishedProjects();
+---
+<BaseLayout title="Work" description="Projects documented through architecture, product decisions, constraints, and evidence.">
+  <div class="container">
+    <header class="page-intro"><p class="eyebrow">Work</p><h1>Built with intention.<br />Explained with evidence.</h1><p class="lede">Public and private projects can both be documented through architecture, decisions, screenshots, and demos. Source-code visibility is only one part of the story.</p></header>
+    {projects.length ? projects.map((project, index) => <ProjectCard project={project} reverse={index % 2 === 1} />) : <EmptyState heading="h2" title="No case studies published yet." description="Case studies will appear here when the work can be explained with real context, decisions, and evidence. The source of this portfolio is available for review." href={profile.repository} linkLabel="Portfolio source" />}
+  </div>
+</BaseLayout>

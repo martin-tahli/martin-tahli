@@ -17,8 +17,9 @@ Owner decision: 2026-09-18. GitHub Actions are paused during active development.
 
 - Work on a feature branch. Do not merge into `main`, publish the site, rename the repository, or change repository settings without approval.
 - Preserve the approved Precision Editorial — Warm Mono Hybrid direction and static-first architecture.
-- Follow the approved specification hierarchy: `MASTER_PROMPT.md`, `docs/DESIGN.md`, `docs/COMPONENTS.md`, `docs/IMPLEMENTATION.md`, the relevant page specification, then visual references.
-- The initial specification pack is supplied in the portfolio project context. Import those approved documents before page implementation; do not invent replacements when they are absent from the repository.
+- Follow the specification hierarchy: `MASTER_PROMPT.md`, `docs/DESIGN.md`, `docs/COMPONENTS.md`, `docs/IMPLEMENTATION.md`, the relevant page specification, then visual references.
+- Approved written specifications now live in the repository. The original reference binary still needs transfer; see `reference/README.md`.
 - Never invent professional facts, contact details, projects, outcomes, or metrics. Keep unknown content out of production.
 - Reference images are composition guidance, not factual sources.
-- Report exactly what changed, what was checked, and what remains unresolved.
+- Keep test content outside `src/content`; fixture builds must use `test-dist`, never `dist`.
+- Report exactly what changed, what was checked, and what remains unresolved. Use `docs/STATUS.md` for the current verification record.

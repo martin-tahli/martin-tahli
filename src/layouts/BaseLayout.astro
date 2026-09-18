@@ -1,0 +1,47 @@
+---
+import '@fontsource/instrument-serif/latin-400.css';
+import '@fontsource-variable/inter/latin.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { profile } from '../data/profile';
+import { withBase } from '../utils/paths';
+import { site } from '../../config/site.mjs';
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+}
+const { title, description, noindex = false, type = 'website' } = Astro.props;
+const fullTitle = `${title} — ${profile.name}`;
+const canonical = new URL(Astro.url.pathname, site.origin);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex || !site.indexable ? 'noindex, nofollow' : 'index, follow'} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg', import.meta.env.BASE_URL)} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={profile.name} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="theme-color" content="#F7F4EE" />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <SiteHeader />
+    <main id="main-content" tabindex="-1"><slot /></main>
+    <SiteFooter />
+  </body>
+</html>

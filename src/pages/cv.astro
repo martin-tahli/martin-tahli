@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { profile } from '../data/profile';
+import { getPublishedProjects } from '../utils/content';
+import { withBase } from '../utils/paths';
+const base = import.meta.env.BASE_URL;
+const projects = (await getPublishedProjects()).filter(({ data }) => data.featured && data.caseStudyAvailable);
+---
+<BaseLayout title="Curriculum Vitae" description={`${profile.name} — ${profile.title}. Professional summary and verified experience.`} noindex={profile.experience.length === 0}>
+  <div class="container">
+    <header class="page-intro"><p class="eyebrow">{profile.name}</p><h1>Curriculum Vitae.</h1><p class="cv-position">{profile.title}</p><p class="lede">{profile.summary}</p><div class="actions no-print">{profile.cvPdf && <a class="button" href={withBase(profile.cvPdf, base)} download>Download PDF</a>}<a class="button secondary" href={withBase('/contact/', base)}>Contact</a></div></header>
+    <div class:list={['cv-layout', { 'without-skills': profile.capabilities.length === 0, 'without-education': profile.education.length === 0 }]}>
+      <div class="cv-main">
+        {profile.experience.length > 0 ? <section><h2>Experience</h2>{profile.experience.map((role) => <article class="cv-entry"><p class="meta">{role.period}</p><h3>{role.role}</h3><p>{role.organization}</p><p>{role.summary}</p><ul>{role.highlights.map((highlight) => <li>{highlight}</li>)}</ul></article>)}</section> : <p class="muted">The detailed CV is not published here yet.</p>}
+        {projects.length > 0 && <section><h2>Selected projects</h2>{projects.map(({ data }) => <article class="cv-entry"><h3><a href={withBase(`/work/${data.slug}/`, base)}>{data.title}</a></h3><p>{data.summary}</p></article>)}</section>}
+      </div>
+      {profile.capabilities.length > 0 && <aside class="cv-skills" aria-label="Capabilities">
+        <section><h2>Selected capabilities</h2>{profile.capabilities.map((capability) => <div class="cv-entry"><h3>{capability.title}</h3><ul>{capability.items.map((item) => <li>{item}</li>)}</ul></div>)}</section>
+      </aside>}
+        {profile.education.length > 0 && <section class="cv-education"><h2>Education</h2>{profile.education.map((education) => <article class="cv-entry"><p class="meta">{education.period}</p><h3>{education.qualification}</h3><p>{education.institution}</p></article>)}</section>}
+      <aside class="cv-details" aria-label="Professional details">
+        {profile.languages.length > 0 && <section><h2>Languages</h2><ul>{profile.languages.map((language) => <li>{language}</li>)}</ul></section>}
+        <section><h2>Links</h2><div class="cv-links"><a href={profile.github}>GitHub ↗</a>{profile.linkedin && <a href={profile.linkedin}>LinkedIn ↗</a>}{profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}</div></section>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+  .cv-position { margin-bottom: 1rem; font-weight: 500; }
+  .cv-layout { display: grid; grid-template-columns: 8fr 4fr; grid-template-areas: "main skills" "education details"; gap: 3rem 4rem; padding-block: 2rem; border-top: 1px solid var(--border); }
+  .cv-layout.without-skills { grid-template-areas: "main details" "education details"; }
+  .cv-layout.without-education { grid-template-areas: "main skills" "main details"; }
+  .cv-layout.without-skills.without-education { grid-template-areas: "main details"; }
+  .cv-skills, .cv-details { border-left: 1px solid var(--border); padding-left: 2rem; }
+  .cv-main { grid-area: main; }
+  .cv-skills { grid-area: skills; }
+  .cv-education { grid-area: education; }
+  .cv-details { grid-area: details; }
+  .cv-layout h2 { font-family: var(--font-body); font-size: 1.25rem; font-weight: 600; }
+  .cv-layout h3 { font-size: 1rem; margin-block: 0.5rem; }
+  .cv-layout section + section { margin-top: 3rem; }
+  .cv-entry { margin-top: 1.75rem; }
+  .cv-entry p + p { margin-top: 0.5rem; }
+  .cv-links { display: grid; margin-top: 1rem; }
+  .cv-links a { display: flex; align-items: center; min-height: 2.75rem; overflow-wrap: anywhere; }
+  @media (max-width: 52rem) { .cv-layout { display: flex; flex-direction: column; gap: 2rem; }.cv-skills, .cv-details { border-left: 0; border-top: 1px solid var(--border); padding: 2rem 0 0; } }
+  @media print { .cv-layout { grid-template-columns: 2fr 1fr; gap: 2rem; } }
+</style>

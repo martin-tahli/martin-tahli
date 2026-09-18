@@ -1,0 +1,33 @@
+---
+title: Test fixture — public case study
+slug: public-fixture
+summary: Synthetic content for template testing. Not portfolio evidence.
+description: A test of MDX, case-study rendering, and headings.
+draft: false
+caseStudyAvailable: true
+featured: true
+visibility: public
+---
+import Callout from '../../../src/components/content/Callout.astro';
+
+## Overview
+
+This is a synthetic fixture, not a claim about Martin's work.
+
+## Architecture
+
+The test exercises a static MDX page and its table of contents.
+
+<Callout kind="Decision" title="Keep fixtures out of deployable output.">
+  Fixture builds use test-dist rather than dist.
+</Callout>
+
+## Testing
+
+```ts
+const decision = 'review before publishing';
+```
+
+| Check | Expected behavior |
+| --- | --- |
+| Draft content | Not routed |

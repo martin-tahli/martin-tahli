@@ -1,0 +1,48 @@
+---
+import { profile, navigation } from '../data/profile';
+import { isActiveRoute, withBase } from '../utils/paths';
+const base = import.meta.env.BASE_URL;
+---
+<header class="site-header container">
+  <a class="wordmark" href={withBase('/', base)}>{profile.name}<span aria-hidden="true">.</span></a>
+  <nav class="desktop-nav" aria-label="Main navigation">
+    {navigation.map(({ label, href }) => (
+      <a href={withBase(href, base)} aria-current={isActiveRoute(Astro.url.pathname, href, base) ? 'page' : undefined}>{label}</a>
+    ))}
+  </nav>
+  <details class="mobile-menu" id="site-menu">
+    <summary>Menu <span aria-hidden="true">+</span></summary>
+    <nav aria-label="Mobile navigation">
+      {navigation.map(({ label, href }) => (
+        <a href={withBase(href, base)} aria-current={isActiveRoute(Astro.url.pathname, href, base) ? 'page' : undefined}>{label}</a>
+      ))}
+    </nav>
+  </details>
+</header>
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('#site-menu');
+  menu?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && menu.open) {
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    }
+  });
+</script>
+<style>
+  .site-header { min-height: 4.75rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; border-bottom: 1px solid var(--border); position: relative; z-index: 2; }
+  .wordmark { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: 1.1rem; font-weight: 600; letter-spacing: -0.035em; text-decoration: none; white-space: nowrap; }
+  .wordmark span { color: var(--terracotta); margin-left: 0.1rem; }
+  .desktop-nav { display: flex; gap: 2rem; }
+  nav a { display: flex; align-items: center; min-height: 2.75rem; font-size: 0.875rem; text-decoration: none; border-bottom: 1px solid transparent; }
+  nav a[aria-current='page'] { border-color: var(--terracotta); color: var(--text-accent); }
+  .mobile-menu { display: none; }
+  summary { display: flex; gap: 1.5rem; align-items: center; min-height: 2.75rem; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary span { color: var(--text-accent); font-size: 1.5rem; }
+  @media (max-width: 48rem) {
+    .desktop-nav { display: none; }
+    .mobile-menu { display: block; }
+    .mobile-menu nav { position: absolute; left: 0; right: 0; top: 100%; padding: 1rem 1.25rem 1.5rem; background: var(--paper); border: 1px solid var(--border); }
+    .mobile-menu nav a { min-height: 3rem; }
+  }
+</style>

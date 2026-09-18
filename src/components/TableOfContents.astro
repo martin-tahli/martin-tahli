@@ -1,0 +1,19 @@
+---
+import type { MarkdownHeading } from 'astro';
+interface Props { headings: MarkdownHeading[] }
+const headings = Astro.props.headings.filter((heading) => heading.depth === 2);
+---
+{headings.length > 1 && <aside class="toc"><details open data-toc><summary>On this page</summary><nav aria-label="Table of contents"><ol>{headings.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></nav></details></aside>}
+<style>
+  .toc { align-self: start; }
+  summary { font: 0.75rem/1.5 var(--font-mono); color: var(--text-secondary); min-height: 2.75rem; display: flex; align-items: center; }
+  ol { list-style: none; margin: 0; padding: 0; }
+  li a { display: flex; align-items: center; padding-block: 0.4rem; min-height: 2.75rem; font-size: 0.8rem; color: var(--text-secondary); }
+  @media (max-width: 52rem) { .toc { position: static; border-block: 1px solid var(--border); } }
+</style>
+
+<script>
+  if (window.matchMedia('(max-width: 52rem)').matches) {
+    document.querySelectorAll<HTMLDetailsElement>('[data-toc]').forEach((toc) => { toc.open = false; });
+  }
+</script>

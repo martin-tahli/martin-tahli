@@ -1,0 +1,26 @@
+:root {
+  color-scheme: light;
+  --paper: #f7f4ee;
+  --surface: #fffdfc;
+  --sand: #e8dccc;
+  --clay: #d5c2b1;
+  --charcoal: #1f1f1f;
+  --stone: #6f7480;
+  --border: #d8d2c8;
+  --terracotta: #b85b3c;
+  --terracotta-hover: #9e4b31;
+  --sage: #6b7f6b;
+  --cobalt: #2563eb;
+  --error: #b42318;
+  --warning: #a15c00;
+  /* Semantic text roles preserve the palette while meeting contrast on paper. */
+  --text-secondary: #5d626b;
+  --text-accent: var(--terracotta-hover);
+  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-body: 'Inter Variable', Inter, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --content-width: 82rem;
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --section-space: clamp(4rem, 8vw, 7.5rem);
+  --radius: 0.375rem;
+}
