@@ -23,7 +23,10 @@ const base = import.meta.env.BASE_URL;
   </nav>
   <details class="mobile-menu" id="site-menu">
     <summary>
-      Menu <span aria-hidden="true">+</span>
+      <span>Menu</span>
+      <span class="menu-mark" aria-hidden="true">
+        +
+      </span>
     </summary>
     <nav aria-label="Mobile navigation">
       {navigation.map(({ label, href }) => (
@@ -50,38 +53,39 @@ const base = import.meta.env.BASE_URL;
 </script>
 <style>
   .site-header {
-    min-height: 4.75rem;
+    min-height: var(--header-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
     border-bottom: 1px solid var(--border);
     position: relative;
-    z-index: 2;
+    z-index: 5;
   }
   .wordmark {
     display: inline-flex;
     align-items: center;
     min-height: 2.75rem;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 650;
     letter-spacing: -0.035em;
     text-decoration: none;
     white-space: nowrap;
   }
   .wordmark span {
     color: var(--terracotta);
-    margin-left: 0.1rem;
+    margin-left: 0.08rem;
   }
   .desktop-nav {
     display: flex;
-    gap: 2rem;
+    align-self: stretch;
+    gap: clamp(1.5rem, 2.5vw, 2.5rem);
   }
   nav a {
     display: flex;
     align-items: center;
     min-height: 2.75rem;
-    font-size: 0.875rem;
+    font-size: 0.84rem;
     text-decoration: none;
     border-bottom: 1px solid transparent;
   }
@@ -94,36 +98,60 @@ const base = import.meta.env.BASE_URL;
   }
   summary {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     align-items: center;
     min-height: 2.75rem;
+    padding-left: 0.75rem;
     list-style: none;
+    user-select: none;
   }
   summary::-webkit-details-marker {
     display: none;
   }
-  summary span {
+  .menu-mark {
     color: var(--text-accent);
     font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 180ms ease;
+  }
+  .mobile-menu[open] .menu-mark {
+    transform: rotate(45deg);
   }
   @media (max-width: 48rem) {
     .desktop-nav {
       display: none;
     }
+    .site-header {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .site-header:has(.mobile-menu[open]) {
+      margin-bottom: 19rem;
+    }
     .mobile-menu {
       display: block;
+    }
+    .mobile-menu summary {
+      gap: 0.75rem;
+      padding-left: 0;
+    }
+    .menu-mark {
+      font-size: 24px;
     }
     .mobile-menu nav {
       position: absolute;
       left: 0;
       right: 0;
-      top: 100%;
-      padding: 1rem 1.25rem 1.5rem;
+      top: calc(100% + 1px);
+      display: grid;
+      padding: 0.75rem 0 1.25rem;
       background: var(--paper);
-      border: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
     .mobile-menu nav a {
-      min-height: 3rem;
+      min-height: 3.25rem;
+      padding-inline: 0.25rem;
+      font-size: 1rem;
     }
   }
 </style>

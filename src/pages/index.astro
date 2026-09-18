@@ -55,7 +55,9 @@ const notes = (await getPublishedNotes()).slice(0, 3);
           </p>
         </div>
       </div>
-      <SystemsFlow id="home-system" />
+      <div class="hero-visual">
+        <SystemsFlow id="home-system" />
+      </div>
     </section>
 
     <section class="section" aria-label="Selected work">
@@ -169,43 +171,73 @@ const notes = (await getPublishedNotes()).slice(0, 3);
 <style>
   .hero {
     display: grid;
-    grid-template-columns: 5fr 6fr;
-    gap: clamp(2rem, 4vw, 4rem);
-    align-items: center;
-    padding-block: clamp(4rem, 7vw, 7rem);
-    min-height: 42rem;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2.5rem, 5vw, 5.5rem);
+    align-items: stretch;
+    min-height: clamp(42rem, calc(100svh - var(--header-height)), 52rem);
+  }
+  .hero-copy {
+    align-self: center;
+    padding-block: clamp(5rem, 10vh, 7.5rem);
   }
   .hero-copy > .eyebrow {
     margin-bottom: 1.5rem;
   }
   .hero h1 {
-    font-size: clamp(3rem, 5.65vw, 5.125rem);
+    max-width: 12ch;
+    font-size: clamp(4rem, 5.7vw, 5.125rem);
+    line-height: 0.94;
   }
   .hero h1 span {
     color: var(--terracotta);
   }
   .hero .lede {
-    margin-top: 1.75rem;
-    max-width: 45ch;
-    font-size: clamp(1.0625rem, 1.3vw, 1.125rem);
+    margin-top: 2rem;
+    max-width: 46ch;
+    font-size: clamp(1.0625rem, 1.3vw, 1.2rem);
   }
   .hero .actions {
-    margin-top: 2rem;
+    margin-top: 2.25rem;
   }
   .hero-note {
     display: flex;
     gap: 1rem;
     align-items: center;
-    margin-top: 3rem;
+    margin-top: clamp(3rem, 7vh, 4.5rem);
   }
   .hero-note > span {
-    width: 2rem;
+    flex: 0 0 2.5rem;
     height: 1px;
     background: var(--terracotta);
   }
   .hero-note p {
     font: 0.75rem/1.65 var(--font-mono);
     color: var(--text-secondary);
+  }
+  .hero-visual {
+    position: relative;
+    display: grid;
+    align-items: center;
+    padding: clamp(2rem, 4vw, 4rem) clamp(1.5rem, 3vw, 3rem);
+    background: var(--sand);
+    border-inline: 1px solid var(--border);
+  }
+  .hero-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 14%;
+    width: 1px;
+    background: color-mix(in srgb, var(--terracotta) 35%, transparent);
+  }
+  .hero-visual :global(.systems-flow) {
+    position: relative;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .hero-visual :global(.eyebrow) {
+    color: var(--charcoal);
   }
   .process-flow {
     display: grid;
@@ -240,10 +272,28 @@ const notes = (await getPublishedNotes()).slice(0, 3);
     margin-block: 1.5rem 2rem;
     font-size: clamp(2.5rem, 5vw, 4rem);
   }
-  @media (max-width: 60rem) {
+  @media (max-width: 70rem) and (min-width: 52.001rem) {
+    .hero {
+      gap: 2rem;
+    }
+    .hero-copy {
+      padding-block: 4rem;
+    }
+    .hero h1 {
+      font-size: clamp(3.5rem, 6vw, 4rem);
+    }
+    .hero-visual {
+      padding-inline: 1.5rem;
+    }
+  }
+  @media (max-width: 52rem) {
     .hero {
       grid-template-columns: 1fr;
+      gap: 0;
       min-height: auto;
+    }
+    .hero-copy {
+      padding-block: clamp(4.5rem, 10vw, 6rem);
     }
     .hero h1 {
       max-width: 14ch;
@@ -251,22 +301,35 @@ const notes = (await getPublishedNotes()).slice(0, 3);
     .hero .lede {
       max-width: 60ch;
     }
+    .hero-visual {
+      min-height: 32rem;
+      border-top: 1px solid var(--border);
+    }
     .hero :global(.systems-flow) {
       max-width: 42rem;
+      margin-inline: auto;
     }
     .process-flow {
       grid-template-columns: repeat(3, 1fr);
     }
   }
   @media (max-width: 36rem) {
-    .hero {
-      padding-block: 3.5rem;
+    .hero-copy {
+      padding-block: 3.75rem 3rem;
     }
     .hero h1 {
-      font-size: clamp(2.6rem, 11vw, 3.375rem);
+      font-size: clamp(2.9rem, 13vw, 3.4rem);
+      line-height: 0.96;
     }
     .hero-note {
-      margin-top: 2rem;
+      margin-top: 2.5rem;
+    }
+    .hero-visual {
+      min-height: 0;
+      width: auto;
+      margin-inline: calc(var(--gutter) * -1);
+      padding: 1.25rem var(--gutter);
+      border-inline: 0;
     }
     .process-flow {
       grid-template-columns: 1fr;

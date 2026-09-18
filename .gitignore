@@ -8,3 +8,8 @@ playwright-report/
 test-results/
 .DS_Store
 test-dist/
+
+# Pi / ce-workflow runtime artifacts (added at init)
+.pi/
+.pi-subagents/
+.ce-workflow/work-runs/

@@ -99,6 +99,34 @@ test('core navigation remains usable without JavaScript', async ({
   await context.close();
 });
 
+test('mobile menu and hero survive text enlargement and missing webfonts', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route(/\.(?:woff2?|ttf)(?:\?|$)/, (route) => route.abort());
+  await page.goto(withBase('/', site.base));
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '200%';
+  });
+  await page.locator('#site-menu summary').click();
+  const layout = await page.evaluate(() => {
+    const menu = document
+      .querySelector<HTMLElement>('#site-menu nav')!
+      .getBoundingClientRect();
+    const hero = document
+      .querySelector<HTMLElement>('.hero')!
+      .getBoundingClientRect();
+    return {
+      fitsViewport: document.documentElement.scrollWidth <= innerWidth,
+      menuClearsHero: menu.bottom <= hero.top,
+    };
+  });
+  expect(layout).toEqual({ fitsViewport: true, menuClearsHero: true });
+  await expect(
+    page.getByRole('link', { name: 'View Work', exact: true }),
+  ).toBeVisible();
+});
+
 test('320px reflow and reduced-motion styles remain usable', async ({
   page,
 }) => {
