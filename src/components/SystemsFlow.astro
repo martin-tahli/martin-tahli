@@ -1,5 +1,7 @@
 ---
-interface Props { id: string }
+interface Props {
+  id: string;
+}
 const { id } = Astro.props;
 const stages = [
   { title: 'Ideas', detail: 'Problems and constraints' },
@@ -8,49 +10,176 @@ const stages = [
   { title: 'Impact', detail: 'Evidence and feedback' },
 ];
 ---
+
 <figure class="systems-flow">
-  <div class="diagram-label"><span class="eyebrow">A systems perspective</span><span aria-hidden="true">FIG. 01</span></div>
-  <svg class="desktop-flow" viewBox="0 0 640 440" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
+  <div class="diagram-label">
+    <span class="eyebrow">A systems perspective</span>
+    <span aria-hidden="true">FIG. 01</span>
+  </div>
+  <svg
+    class="desktop-flow"
+    viewBox="0 0 640 440"
+    role="img"
+    aria-labelledby={`${id}-title ${id}-desc`}
+  >
     <title id={`${id}-title`}>Ideas → Systems → People → Impact</title>
-    <desc id={`${id}-desc`}>Problems and constraints shape a product and its architecture. People use the system. Evidence from that use feeds back into the next decision.</desc>
+    <desc id={`${id}-desc`}>
+      Problems and constraints shape a product and its architecture. People use
+      the system. Evidence from that use feeds back into the next decision.
+    </desc>
     <defs>
-      <pattern id={`${id}-grid`} width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="var(--border)" stroke-width="0.6" /></pattern>
-      <marker id={`${id}-arrow`} viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="var(--charcoal)" /></marker>
+      <pattern
+        id={`${id}-grid`}
+        width="32"
+        height="32"
+        patternUnits="userSpaceOnUse"
+      >
+        <path
+          d="M32 0H0V32"
+          fill="none"
+          stroke="var(--border)"
+          stroke-width="0.6"
+        />
+      </pattern>
+      <marker
+        id={`${id}-arrow`}
+        viewBox="0 0 8 8"
+        refX="7"
+        refY="4"
+        markerWidth="5"
+        markerHeight="5"
+        orient="auto"
+      >
+        <path d="M0 0L8 4L0 8" fill="none" stroke="var(--charcoal)" />
+      </marker>
     </defs>
     <rect width="640" height="440" fill={`url(#${id}-grid)`} />
-    <g fill="none" stroke="var(--border)"><path d="M202 113L274 150V307L202 270Z" fill="var(--sand)"/><path d="M350 145L414 178V327L350 294Z" fill="var(--surface)"/></g>
-    <g fill="none" stroke="var(--charcoal)" stroke-width="1.2" marker-end={`url(#${id}-arrow)`}>
-      <path d="M86 235C140 235 160 209 222 209"/><path d="M239 209C287 209 298 236 368 236"/><path d="M386 236C446 236 456 208 523 208"/>
-      <path d="M528 244V357H80V265" stroke-dasharray="4 5"/>
+    <g fill="none" stroke="var(--border)">
+      <path d="M202 113L274 150V307L202 270Z" fill="var(--sand)" />
+      <path d="M350 145L414 178V327L350 294Z" fill="var(--surface)" />
     </g>
-    <g stroke="var(--terracotta)" fill="var(--paper)"><circle cx="76" cy="235" r="7"/><circle cx="231" cy="209" r="8" fill="var(--terracotta)"/></g>
-    <circle cx="378" cy="236" r="8" fill="var(--sage)"/>
-    <circle cx="539" cy="208" r="26" fill="none" stroke="var(--border)"/>
-    <circle cx="539" cy="208" r="10" fill="var(--cobalt)"/>
-    <g fill="var(--charcoal)" font-family="var(--font-mono)" font-size="12" letter-spacing="1.5">
-      <text x="47" y="180">IDEAS</text><text x="200" y="92">SYSTEMS</text><text x="350" y="122">PEOPLE</text><text x="510" y="153">IMPACT</text>
+    <g
+      fill="none"
+      stroke="var(--charcoal)"
+      stroke-width="1.2"
+      marker-end={`url(#${id}-arrow)`}
+    >
+      <path d="M86 235C140 235 160 209 222 209" />
+      <path d="M239 209C287 209 298 236 368 236" />
+      <path d="M386 236C446 236 456 208 523 208" />
+      <path d="M528 244V357H80V265" stroke-dasharray="4 5" />
     </g>
-    <text x="188" y="386" fill="var(--text-secondary)" font-family="var(--font-mono)" font-size="11">EVIDENCE INFORMS THE NEXT DECISION</text>
+    <g stroke="var(--terracotta)" fill="var(--paper)">
+      <circle cx="76" cy="235" r="7" />
+      <circle cx="231" cy="209" r="8" fill="var(--terracotta)" />
+    </g>
+    <circle cx="378" cy="236" r="8" fill="var(--sage)" />
+    <circle cx="539" cy="208" r="26" fill="none" stroke="var(--border)" />
+    <circle cx="539" cy="208" r="10" fill="var(--cobalt)" />
+    <g
+      fill="var(--charcoal)"
+      font-family="var(--font-mono)"
+      font-size="12"
+      letter-spacing="1.5"
+    >
+      <text x="47" y="180">
+        IDEAS
+      </text>
+      <text x="200" y="92">
+        SYSTEMS
+      </text>
+      <text x="350" y="122">
+        PEOPLE
+      </text>
+      <text x="510" y="153">
+        IMPACT
+      </text>
+    </g>
+    <text
+      x="188"
+      y="386"
+      fill="var(--text-secondary)"
+      font-family="var(--font-mono)"
+      font-size="11"
+    >
+      EVIDENCE INFORMS THE NEXT DECISION
+    </text>
   </svg>
   <ol class="mobile-flow">
-    {stages.map((stage, i) => <li><span class="eyebrow">0{i + 1}</span><div><strong>{stage.title}</strong><span>{stage.detail}</span></div></li>)}
+    {stages.map((stage, i) => (
+      <li>
+        <span class="eyebrow">0{i + 1}</span>
+        <div>
+          <strong>{stage.title}</strong>
+          <span>{stage.detail}</span>
+        </div>
+      </li>
+    ))}
   </ol>
-  <figcaption>People are part of the architecture. Feedback closes the loop.</figcaption>
+  <figcaption>
+    People are part of the architecture. Feedback closes the loop.
+  </figcaption>
 </figure>
 <style>
-  .systems-flow { padding: 1.5rem; border-block: 1px solid var(--border); background: var(--surface); }
-  .diagram-label { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .diagram-label > span:last-child { font: 0.65rem/1.5 var(--font-mono); color: var(--text-secondary); }
-  svg { width: 100%; height: auto; display: block; margin-top: 1.5rem; }
-  figcaption { padding-top: 1rem; border-top: 1px solid var(--border); }
-  .mobile-flow { display: none; }
+  .systems-flow {
+    padding: 1.5rem;
+    border-block: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .diagram-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .diagram-label > span:last-child {
+    font: 0.65rem/1.5 var(--font-mono);
+    color: var(--text-secondary);
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 1.5rem;
+  }
+  figcaption {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .mobile-flow {
+    display: none;
+  }
   @media (max-width: 48rem) {
-    .systems-flow { padding: 1.25rem; }
-    .desktop-flow { display: none; }
-    .mobile-flow { list-style: none; display: grid; padding: 0; margin: 2rem 0; }
-    .mobile-flow li { display: flex; gap: 1.25rem; padding: 0 0 1.5rem 1rem; border-left: 1px solid var(--border); }
-    .mobile-flow li:last-child { padding-bottom: 0; }
-    .mobile-flow strong { display: block; font-size: 1rem; font-weight: 500; }
-    .mobile-flow div > span { display: block; color: var(--text-secondary); font-size: 0.8rem; }
+    .systems-flow {
+      padding: 1.25rem;
+    }
+    .desktop-flow {
+      display: none;
+    }
+    .mobile-flow {
+      list-style: none;
+      display: grid;
+      padding: 0;
+      margin: 2rem 0;
+    }
+    .mobile-flow li {
+      display: flex;
+      gap: 1.25rem;
+      padding: 0 0 1.5rem 1rem;
+      border-left: 1px solid var(--border);
+    }
+    .mobile-flow li:last-child {
+      padding-bottom: 0;
+    }
+    .mobile-flow strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .mobile-flow div > span {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
   }
 </style>

@@ -7,4 +7,5 @@ draft: true
 featured: true
 caseStudyAvailable: true
 ---
+
 DO_NOT_PUBLISH_FIXTURE

@@ -6,9 +6,30 @@ import { getPublishedNotes } from '../../utils/content';
 import { withBase } from '../../utils/paths';
 const notes = await getPublishedNotes();
 ---
-<BaseLayout title="Engineering Notes" description="Selective writing about experiments, architecture decisions, and lessons from building systems.">
+
+<BaseLayout
+  title="Engineering Notes"
+  description="Selective writing about experiments, architecture decisions, and lessons from building systems."
+>
   <div class="container">
-    <header class="page-intro"><p class="eyebrow">Field notes</p><h1>Engineering notes.</h1><p class="lede">Experiments, architecture decisions, and lessons — published when there is something useful to document.</p></header>
-    {notes.length ? notes.map((note) => <NoteRow note={note} />) : <EmptyState heading="h2" title="Nothing published yet." description="No posting schedule. No filler. Notes belong here when an experiment, decision, or failure produces something worth sharing." href={withBase('/work/', import.meta.env.BASE_URL)} linkLabel="Explore work" />}
+    <header class="page-intro">
+      <p class="eyebrow">Field notes</p>
+      <h1>Engineering notes.</h1>
+      <p class="lede">
+        Experiments, architecture decisions, and lessons — published when there
+        is something useful to document.
+      </p>
+    </header>
+    {notes.length ? (
+      notes.map((note) => <NoteRow note={note} />)
+    ) : (
+      <EmptyState
+        heading="h2"
+        title="Nothing published yet."
+        description="No posting schedule. No filler. Notes belong here when an experiment, decision, or failure produces something worth sharing."
+        href={withBase('/work/', import.meta.env.BASE_URL)}
+        linkLabel="Explore work"
+      />
+    )}
   </div>
 </BaseLayout>

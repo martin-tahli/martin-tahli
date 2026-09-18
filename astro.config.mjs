@@ -11,10 +11,14 @@ export default defineConfig({
   outDir: site.testContent ? './test-dist' : './dist',
   trailingSlash: 'always',
   prerenderConflictBehavior: 'error',
-  cacheDir: site.testContent ? './node_modules/.astro-fixtures' : './node_modules/.astro',
+  cacheDir: site.testContent
+    ? './node_modules/.astro-fixtures'
+    : './node_modules/.astro',
   integrations: [
     mdx(),
-    sitemap({ filter: (url) => !/\/404(?:\.html|\/)?$/.test(new URL(url).pathname) }),
+    sitemap({
+      filter: (url) => !/\/404(?:\.html|\/)?$/.test(new URL(url).pathname),
+    }),
   ],
   vite: { plugins: [tailwindcss()] },
 });

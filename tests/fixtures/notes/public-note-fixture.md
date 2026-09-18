@@ -9,6 +9,7 @@ relatedProjects:
   - public-fixture
   - draft-fixture
 ---
+
 ## Observation
 
 This is test content, not a published note by Martin.

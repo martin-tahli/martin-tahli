@@ -1,46 +1,38 @@
-# Foundation review status
+# Preview verification status
 
-Date: 2026-09-18. Scope: initial static application, content templates, and local verification setup. This is a draft implementation, not a release or a completed visual acceptance.
+Date: 2026-09-18. The owner authorized an initial public preview and the required merge. Final content and visual acceptance remain separate decisions.
 
 ## Implemented
 
-- Approved written specifications imported, with the owner's paused-Actions decision reflected in the master and implementation contract.
-- Astro, MDX, Tailwind Vite configuration; exact dependencies and the existing lockfile preserved.
-- Warm Mono tokens, accessible semantic text colors, font imports, shared header/footer, native mobile navigation, and a captioned systems diagram.
-- Home, Work, Notes, About, CV, Contact, 404; project case-study and note detail templates.
-- Explicit draft filtering, future-note filtering, source-visibility protection, conditional unknown content, image/alt schema, duplicate-route and empty-body protection.
-- Local test scripts, browser checks, separate synthetic fixture builds, documentation, and review checklist. No runtime React dependency introduced.
-- Canonical/social text metadata, sitemap and robots infrastructure, indexing disabled by default, and base-path-aware links.
+The static Astro application includes Home, Work, Notes, About, CV, Contact, 404, and content-driven project/note templates. Unknown professional facts remain absent. Drafts, future notes, and synthetic fixtures are excluded from normal output. Indexing defaults to off.
 
-## Executed locally
+The root README is now the short profile introduction; setup and engineering documentation live in `docs/DEVELOPMENT.md`.
 
-Environment: Node 22.16.0, npm 10.9.2. The complete pinned toolchain should use Node 22.23.2 from `.nvmrc`.
+## Initial local checks
 
-| Check | Result | Scope / limitation |
-| --- | --- | --- |
-| `npm test` | 72 passed; 0 failed | Dependency-free unit and repository tests. Not an application build. |
-| TypeScript syntax inspection | 41 source/frontmatter/script units; no parse errors | Available TypeScript 5.8.3 parser. Not the pinned TypeScript version or Astro template compilation. |
-| CSS syntax inspection | 15 style units; no parse errors | Available PostCSS parser. Not a Tailwind build or browser layout test. |
-| Relative import inspection | 70 relative imports resolved locally | Does not resolve unavailable npm dependencies or Astro virtual modules. |
-| Text contrast calculations | Six configured pairings pass 4.5:1 | Primitive/semantic token calculations only; rendered accessibility still needs review. |
-| GitHub Actions files | No runnable workflow files | Actions remain paused. |
+Node 22.16.0: 72 dependency-free unit tests passed. Syntax and import inspections were also performed, but did not establish an application build.
 
-## Blocked / unverified
+## Connected preview checkpoint
 
-Direct network access to GitHub/npm is unavailable in this local runtime. An offline attempt to resolve `astro@7.3.3` returned `ENOTCACHED`. The pinned dependency installation, formatter, ESLint, Astro type check, static build, browser tests, screenshot comparison, and Lighthouse measurement have **not** passed here because they have not been run successfully. No Actions run was started to substitute for them.
+The editing runtime cannot resolve npm or GitHub hosts. A bounded, owner-authorized verification run was requested on `ops/preview-check`; routine development Actions remain paused.
 
-Do not merge based on the utility tests alone. The first connected local validation pass must run formatting and the complete verification sequence in the README, including `/martin-tahli/` and `/` builds. The declared browser tests also need execution against the isolated fixture build.
+Run: `35345533453`. Source: `94b4a6bbd069db253cd5ea0ca0f13defc02937a1`. Runtime: Node 22.23.2, npm 10.9.8.
 
-## Remaining before release
+- Locked installation succeeded.
+- ESLint passed.
+- Astro check examined 40 files with zero errors, warnings, or hints.
+- All 72 unit tests passed.
+- Formatting failed in 45 files; the formatter's exact output was collected as a review artifact.
+- Static builds failed because `@fontsource-variable/inter/latin.css` is not an exported file in the pinned package. Browser tests were not executed.
 
-- Transfer the original reference binary into `reference/`; the supplied board was inspected and its digest is recorded there.
-- Run the full pinned-toolchain verification and correct any integration failures.
-- Perform actual desktop/mobile, keyboard, reduced-motion, print, and performance review. No browser screenshots or Lighthouse scores are claimed.
-- Review the proposed diagram-led hero placement against the approved design; no new visual direction is being proposed.
-- Add approved public contact details, real CV content/PDF, and project evidence. Current empty states are deliberate.
-- Add final social preview imagery and the planned privacy-conscious video embed support. Demo links are supported now.
-- Confirm hosting target, license decision, content/visual approval, merge approval, and publication approval. Keep indexing and deployment inactive until then.
+The next commit applies the collected formatter output and replaces the Inter import with the documented `@fontsource-variable/inter/wght.css` entry. These fixes require verification before claiming the preview is buildable.
 
-## Next implementation checkpoint
+## Remaining
 
-Validate this draft in a connected local environment before increasing scope. Maintain the current branch and preserve the no-Actions policy. Record actual results here rather than converting unrun checks into green claims.
+- Complete static builds, browser/accessibility checks, fixture isolation, and root/project-base verification.
+- Inspect actual desktop/mobile screenshots; final visual acceptance and broader browser/performance/print review remain open.
+- Keep the initial preview non-indexable. Do not publish synthetic fixtures.
+- Enable the Pages source setting and deploy only after successful build verification.
+- Transfer the original reference binary and add approved project evidence, CV content/PDF, public contacts, social preview imagery, and privacy-conscious video support in later work.
+
+No deployment success, performance score, or completed visual acceptance is claimed here.

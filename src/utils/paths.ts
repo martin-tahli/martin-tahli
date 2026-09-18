@@ -17,17 +17,34 @@ export function withBase(path: string, base: string): string {
   return `${prefix}/${path.replace(/^\//, '')}`;
 }
 
-export function isActiveRoute(pathname: string, route: string, base: string): boolean {
+export function isActiveRoute(
+  pathname: string,
+  route: string,
+  base: string,
+): boolean {
   const target = withBase(route, base).replace(/\/$/, '');
   const current = pathname.replace(/\/$/, '');
-  return current === target || (route !== '/' && current.startsWith(`${target}/`));
+  return (
+    current === target || (route !== '/' && current.startsWith(`${target}/`))
+  );
 }
 
 export function isHttpUrl(value: string): boolean {
   try {
-    if (value.trim() !== value || Array.from(value).some((character) => character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127)) return false;
+    if (
+      value.trim() !== value ||
+      Array.from(value).some(
+        (character) =>
+          character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127,
+      )
+    )
+      return false;
     const url = new URL(value);
-    return ['http:', 'https:'].includes(url.protocol) && !url.username && !url.password;
+    return (
+      ['http:', 'https:'].includes(url.protocol) &&
+      !url.username &&
+      !url.password
+    );
   } catch {
     return false;
   }

@@ -7,6 +7,7 @@ draft: false
 visibility: private
 caseStudyAvailable: true
 ---
+
 ## Overview
 
 A synthetic private-source fixture.
