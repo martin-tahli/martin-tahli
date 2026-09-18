@@ -1,5 +1,7 @@
 # 0002 — Profile README and public preview
 
+> Historical decision. The Actions pause, bounded-run exception, and manual-only restrictions below are superseded by [decision 0003](0003-self-hosted-ci.md). The preview/content boundaries remain in force.
+
 Date: 2026-09-18. Owner decision: simplify the GitHub profile README, enable GitHub Pages for visual review, and merge the required PR when needed.
 
 ## Decision

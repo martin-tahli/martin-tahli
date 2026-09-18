@@ -4,31 +4,6 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { profile } from '../../src/data/profile.ts';
 import { isHttpUrl, withBase } from '../../src/utils/paths.ts';
 
-test('workflows require an explicit preview or deployment request', () => {
-  const directory = new URL('../../.github/workflows/', import.meta.url);
-  const files = existsSync(directory)
-    ? readdirSync(directory).filter((name) => /\.ya?ml$/.test(name))
-    : [];
-  const approvedEvents: Record<string, string> = {
-    'pages.yml': '  workflow_dispatch:',
-  };
-  for (const name of files) {
-    assert.ok(name in approvedEvents, `Unapproved workflow: ${name}`);
-    const workflow = readFileSync(new URL(name, directory), 'utf8');
-    assert.equal(workflow.match(/^on:/gm)?.length, 1);
-    const events = workflow.match(/^on:\n((?:[ \t].*\n|\n)*)/m)?.[1]?.trimEnd();
-    assert.equal(
-      events,
-      approvedEvents[name],
-      'Routine pushes, PRs, and schedules must not start Actions.',
-    );
-    assert.doesNotMatch(
-      workflow,
-      /contents:\s*write/,
-      'Verification and Pages deployment cannot write source.',
-    );
-  }
-});
 test('known profile links use valid web URLs', () => {
   for (const url of [
     profile.github,

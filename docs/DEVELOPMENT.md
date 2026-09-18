@@ -65,7 +65,9 @@ Private-source work can have a public case study, but source links require expli
 
 The approved preview target is `https://martin-tahli.github.io/martin-tahli/`. This preserves the profile repository name; no rename or custom domain is needed. Indexing stays disabled while content and design are under review.
 
-Routine commits and pull requests must not run Actions. The owner authorized a bounded connected verification exception to unblock the initial preview because the editing runtime cannot access npm. The temporary `ops/preview-check` branch is an explicit verification request, not an automatic development pipeline. Its workflow is removed before merging. The final Pages workflow is manual-only. See [DEPLOYMENT.md](DEPLOYMENT.md) and [decision 0002](decisions/0002-preview-publication.md).
+Actions are enabled on owner-provided self-hosted runners. Pushes to `main`, `feat/**`, `fix/**`, `chore/**`, and `docs/**` run verification; only successful `main` runs deploy. Manual runs remain available. External pull-request events never execute on the local runners. Review outside contributions before applying them to an owner-controlled branch.
+
+The workflow uses the locked Node/npm toolchain, root-base checks, the full project-base verification, and isolated fixtures. It installs Chromium without installing host packages. Runner prerequisites and Pages activation are documented in [DEPLOYMENT.md](DEPLOYMENT.md). The current policy is [decision 0003](decisions/0003-self-hosted-ci.md), replacing the initial manual-only restriction.
 
 ## AI-assisted development
 

@@ -114,11 +114,12 @@ A page is not done until:
 - visual system matches `DESIGN.md`
 - there are no obvious template/AI-portfolio clichés
 
+## 8. Owner decision — self-hosted CI and preview deployment (2026-09-18)
 
-## 8. Owner decisions — local-first development and initial preview (2026-09-18)
+Martin removed the paused-Actions rule after providing self-hosted runners and authorized merge and preview deployment. Routine verification and automatic publication from successfully verified `main` commits are now enabled by policy. This replaces the former manual-only exception; see `AGENTS.md` and `docs/decisions/0003-self-hosted-ci.md`.
 
-Routine automatic GitHub Actions remain paused. Run dependency installation, formatting, linting, type checks, tests, builds and browser checks locally wherever possible. Do not add push, pull-request, or schedule triggers. Unrun checks remain unverified.
+Every job targets `self-hosted`. Verification runs for owner-controlled development-branch pushes and manual requests; external pull-request events must not execute on the local machines. Preserve repository/actor checks, least privilege, pinned actions, timeouts, and full test gates. Do not use sudo or modify host services to resolve missing build prerequisites. Record actual runner execution and failures rather than assuming runner availability.
 
-Martin subsequently authorized an initial public Pages preview and the necessary PR merge. A bounded connected verification exception was used because the editing runtime cannot resolve npm/GitHub hosts. It has completed successfully; its temporary workflow is removed. The retained `pages.yml` is manual-only and requires successful release checks before deploying normal `dist` output. Do not recreate the operations-branch trigger for ordinary development. See `AGENTS.md`, `docs/decisions/0002-preview-publication.md`, and `docs/STATUS.md`.
+The approved preview target is `https://martin-tahli.github.io/martin-tahli/`. Keep indexing disabled while the preview is under review. Verify `/` first, then build and verify `/martin-tahli/` so `dist` contains the correct publication target. Fixture output stays in `test-dist` and must never be deployed.
 
-The approved preview target is `https://martin-tahli.github.io/martin-tahli/`. Keep indexing disabled while the preview is under review. Test the site at `/martin-tahli/` as well as `/`; never hard-code the deployment prefix inside components. The root README is the short profile introduction; engineering setup instructions live in `docs/DEVELOPMENT.md`.
+The root README is the short profile introduction; engineering setup instructions live in `docs/DEVELOPMENT.md`. A passing workflow does not replace content approval or final visual review.
