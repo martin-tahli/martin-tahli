@@ -19,15 +19,12 @@ test.describe('Findavia case study', () => {
       const link = project.getByRole('link', { name: /View case study/ });
       await expect(link).toHaveAttribute('href', withBase(route, site.base));
       await link.click();
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-        'Findavia',
-      );
+      const heading = page.getByRole('heading', { level: 1 });
+      await expect(heading).toHaveText('Findavia');
     });
   }
 
-  test('renders accessible content, metadata, and explicit evidence limits', async ({
-    page,
-  }) => {
+  test('has accessible content and honest metadata', async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     page.on('requestfailed', (request) => errors.push(request.url()));
@@ -38,21 +35,17 @@ test.describe('Findavia case study', () => {
     expect(response?.status()).toBe(200);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.getByRole('main')).toHaveCount(1);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-      'Findavia',
-    );
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
-      'href',
-      `${site.origin}${withBase(route, site.base)}`,
-    );
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-      'content',
-      /Findavia/,
-    );
-    await expect(
-      page.getByText('Private source', { exact: true }),
-    ).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Source code' })).toHaveCount(0);
+    const heading = page.getByRole('heading', { level: 1 });
+    await expect(heading).toHaveText('Findavia');
+    const canonical = page.locator('link[rel="canonical"]');
+    const canonicalUrl = `${site.origin}${withBase(route, site.base)}`;
+    await expect(canonical).toHaveAttribute('href', canonicalUrl);
+    const description = page.locator('meta[name="description"]');
+    await expect(description).toHaveAttribute('content', /Findavia/);
+    const privateSource = page.getByText('Private source', { exact: true });
+    await expect(privateSource).toBeVisible();
+    const sourceLink = page.getByRole('link', { name: 'Source code' });
+    await expect(sourceLink).toHaveCount(0);
     await expect(page.locator('.case-study-flow')).toHaveCount(2);
     await expect(page.locator('.case-study-flow li')).toHaveCount(6);
     await expect(page.locator('astro-island')).toHaveCount(0);
@@ -61,9 +54,8 @@ test.describe('Findavia case study', () => {
     expect(body).toContain('Billing remains deferred');
     expect(body).toContain('Inventory is not coverage');
     expect(body).not.toMatch(/1,123|212 shipped keys|64 Playwright/);
-    expect(body).not.toMatch(
-      /Recruiter Signal Audit|Questions \/ Missing Evidence/,
-    );
+    const audit = /Recruiter Signal Audit|Questions \/ Missing Evidence/;
+    expect(body).not.toMatch(audit);
     expect(body).not.toContain('DO_NOT_PUBLISH_FIXTURE');
     expect(
       await page.evaluate(
@@ -77,9 +69,7 @@ test.describe('Findavia case study', () => {
     expect(errors).toEqual([]);
   });
 
-  test('section navigation targets real headings and works with the keyboard', async ({
-    page,
-  }) => {
+  test('has working keyboard section navigation', async ({ page }) => {
     await page.goto(withBase(route, site.base));
     const toc = page.getByRole('navigation', { name: 'Table of contents' });
     if (!(await toc.isVisible())) {
@@ -103,9 +93,7 @@ test.describe('Findavia case study', () => {
     expect(new URL(page.url()).hash).toBe('#architecture');
   });
 
-  test('reflows at narrow, tablet, and enlarged-text sizes without motion', async ({
-    page,
-  }) => {
+  test('supports reflow and reduced motion', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(withBase(route, site.base));
     for (const width of [320, 768, 1440]) {
@@ -125,19 +113,16 @@ test.describe('Findavia case study', () => {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-    await expect(page.locator('.case-study-flow').first()).toBeVisible();
-    const motion = await page.locator('.case-study-flow').first().evaluate(
-      (element) => ({
-        animation: getComputedStyle(element).animationName,
-        transition: getComputedStyle(element).transitionDuration,
-      }),
-    );
+    const flow = page.locator('.case-study-flow').first();
+    await expect(flow).toBeVisible();
+    const motion = await flow.evaluate((element) => ({
+      animation: getComputedStyle(element).animationName,
+      transition: getComputedStyle(element).transitionDuration,
+    }));
     expect(motion).toEqual({ animation: 'none', transition: '0s' });
   });
 
-  test('content and return navigation work without JavaScript', async ({
-    browser,
-  }) => {
+  test('supports reading without JavaScript', async ({ browser }) => {
     const context = await browser.newContext({
       javaScriptEnabled: false,
       viewport: { width: 390, height: 844 },
@@ -146,21 +131,22 @@ test.describe('Findavia case study', () => {
       const page = await context.newPage();
       await page.goto(`http://127.0.0.1:4321${withBase(route, site.base)}`);
       await expect(page.locator('.case-study-flow')).toHaveCount(2);
-      await expect(
-        page.getByRole('heading', { name: 'AI-assisted engineering' }),
-      ).toBeVisible();
-      await page
-        .getByRole('link', { name: '← Back to work', exact: true })
-        .click();
+      const aiHeading = page.getByRole('heading', {
+        name: 'AI-assisted engineering',
+      });
+      await expect(aiHeading).toBeVisible();
+      const back = page.getByRole('link', {
+        name: '← Back to work',
+        exact: true,
+      });
+      await back.click();
       expect(new URL(page.url()).pathname).toBe(withBase('/work/', site.base));
     } finally {
       await context.close();
     }
   });
 
-  test('captures the case study for visual review', async ({
-    page,
-  }, testInfo) => {
+  test('captures a review screenshot', async ({ page }, testInfo) => {
     await page.goto(withBase(route, site.base));
     await page.evaluate(() => document.fonts.ready);
     await page.screenshot({
