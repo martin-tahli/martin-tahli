@@ -1,0 +1,186 @@
+---
+title: Findavia
+slug: findavia
+summary: Building a Bulgarian service marketplace with AI-assisted engineering, member-level booking, and explicit trust boundaries.
+description: 'How I built Findavia: product decisions, marketplace architecture, booking concurrency, and AI-assisted engineering verified through system behavior.'
+draft: false
+featured: true
+status: live
+role: Primary product engineer and repository maintainer
+visibility: private
+technologies:
+  - Flutter / Dart
+  - Supabase
+  - Playwright
+  - GitHub Actions
+categories:
+  - Product
+  - Engineering
+  - Automation
+caseStudyAvailable: true
+---
+
+import Callout from '../../components/content/Callout.astro';
+import CaseStudyFlow from '../../components/content/CaseStudyFlow.astro';
+
+## Overview
+
+Findavia is a web-first marketplace for Bulgarian customers and service providers, from individual professionals to multi-member companies. It brings discovery, direct booking, quote-to-booking workflows, packages, and role-specific operations into one application.
+
+As primary product engineer and repository maintainer, I worked across product scope, architecture, AI-assisted development, database policies, verification, and deployment. The central challenge was keeping identity, permissions, and member-level calendars consistent across the whole product.
+
+**Stage documented here:** production-deployed, with launch validation, provider seeding, and stranger testing still ongoing. Billing remains deferred.
+
+<CaseStudyFlow
+  id="findavia-product"
+  caption="Product flow: discovery leads into booking or a quote, then role-specific operations. This is a conceptual flow, not a product screenshot."
+  steps={[
+    {
+      label: 'Customer',
+      title: 'Find a service',
+      detail: 'Discover providers and choose a service.',
+    },
+    {
+      label: 'Booking',
+      title: 'Book or request a quote',
+      detail: 'Use a real slot or a quote-to-booking workflow.',
+    },
+    {
+      label: 'Provider',
+      title: 'Manage the work',
+      detail: 'Coordinate members, calendars, and notifications.',
+    },
+  ]}
+/>
+
+## Problem and constraints
+
+A service marketplace needs more than a catalog. A booking must refer to a real calendar. A company must be able to assign work to different members without either double-booking a person or blocking the entire company. Customers, providers, and administrators need different capabilities without leaking private data across accounts.
+
+Findavia also needed to support work that cannot be booked immediately. Quotes and packages had to coexist with direct booking rather than becoming disconnected products.
+
+The constraints were an early-stage budget, a web-first Flutter application, and a direct-to-Supabase architecture. The launch scope needed to reflect what the system could reliably support, not every feature a marketplace might eventually need.
+
+## My role
+
+I was the primary product engineer and repository maintainer. My scope covered product boundaries, architecture contracts, the application and data model, AI-assisted implementation, authorization policies, release gates, and evidence-driven QA.
+
+AI assisted with requirements, planning, implementation, review, and debugging. I remained responsible for the decisions and acceptance criteria.
+
+## Product decisions
+
+### 01. One provider model, not two products
+
+An individual is a provider with one member; a company has several members connected to services and calendars. Both use the same booking, profile, and review systems.
+
+**Why:** the same core service workflows need to work for both kinds of provider. Separate models would duplicate those workflows.
+
+**Consequence:** provider identity, owner identity, member identity, and public route identity must remain distinct. The simpler product model creates a more demanding authorization and scheduling contract.
+
+### 02. Confirm a member instead of building a dispatch queue
+
+For v1, booking assignment uses customer-selected staff with a stateless fallback based on who has the most free time that day. A confirmed booking is tied to a real member calendar.
+
+**Alternative left out:** pending assignment, round-robin state, travel-time routing, and reassignment history.
+
+**Consequence:** the first version avoids a separate dispatch operation, but availability and conflict enforcement must agree at member level. A later defect showed exactly why that distinction mattered.
+
+### 03. Defer monetization rather than imply it works
+
+Subscription UI exists, but billing enforcement is gated behind a coming-soon state. Escrow, general chat, advanced ranking, and complex package variants also stayed outside the supported launch scope.
+
+**Tradeoff:** fewer capabilities at launch, in exchange for a product surface that does not promise unfinished operational behavior.
+
+## Architecture
+
+The Flutter interface calls Supabase through feature controllers, services, and repositories. There is no custom API server between the application and the database.
+
+<CaseStudyFlow
+  id="findavia-architecture"
+  caption="Request path and trust boundary. Client routing is not authorization: database policies, grants, RPC checks, triggers, and constraints enforce the contract."
+  steps={[
+    {
+      label: 'Client',
+      title: 'Flutter interface',
+      detail: 'Customer, provider, and admin workflows.',
+    },
+    {
+      label: 'Application',
+      title: 'Services and repositories',
+      detail: 'Feature actions become table or RPC requests.',
+    },
+    {
+      label: 'Trust boundary',
+      title: 'Supabase / Postgres',
+      detail: 'RLS, grants, caller checks, and database constraints.',
+      technical: true,
+    },
+  ]}
+/>
+
+**The decision:** removing a server tier made database contracts central to application security. Row-level security (RLS), grants, caller-validating database functions, triggers, and public-safe projections carry the trust boundary. Schema changes therefore require forward-only migrations, SQL regression tests, drift checks, and explicit approval for sensitive contracts.
+
+Supabase Realtime supports in-app updates. Notification events follow a database-backed dispatch path through an Edge Function to Resend or Firebase Cloud Messaging. Integration secrets stay in Edge Functions rather than in the client. Sentry receives scrubbed crash data, while PostHog analytics are consent-gated.
+
+Vercel serves the web bundle. Deployment also runs a prerender tool for public routes, producing visible HTML, canonical metadata, and a sitemap to address limitations of a pure Flutter single-page application.
+
+## AI-assisted engineering
+
+AI entered the development workflow, not an autonomous customer-facing feature. Tasks were bounded by architecture, database, route, and security contracts rather than handed to an agent as one unconstrained project prompt.
+
+Runtime code and migrations took precedence over documentation. Active plans owned the current work; shipped summaries replaced stale plans. Changes to database, authentication, authorization, and route contracts required explicit approval.
+
+The verification layer was deliberately executable: commands, assertions, actor roles, database state, cleanup, and residual risk. Model-generated recommendations were proposals to evaluate, not proof of correctness.
+
+<Callout kind="Observation" title="Verify the fix, not the confidence">
+  <p>
+    One delegated accessibility fix was checked by removing it, observing the
+    regression test fail, and restoring it. That check established that the test
+    could detect the original failure, rather than merely passing alongside a
+    plausible patch.
+  </p>
+</Callout>
+
+## What changed after testing
+
+### Availability and conflict enforcement disagreed
+
+The availability picker understood individual members, but the database overlap trigger operated at provider level. Two different employees could appear available and still be prevented from working at the same time.
+
+The correction aligned database enforcement with member-level availability. SQL controls covered both permitted parallel work and genuine conflicts. The lesson was not just to improve the picker: the product's scheduling unit had to match the database's enforcement unit.
+
+### A read operation changed account authority
+
+Lifecycle QA exposed a more serious boundary failure. Provider routing could mount while role lookup was unresolved, and a profile-fetch operation could create a provider record. Provider ownership then influenced role resolution.
+
+The correction covered three layers: make the repository read-only, fail closed while role state is unknown, and remove direct client insert permission. Tests and live QA checked cleanup and denial of direct escalation. A route-only patch would have left the database path exposed.
+
+These failures also changed the QA standard. A visible button or a populated list was no longer enough. A workflow needed stable record IDs, authoritative database checks, cross-account denial checks, and cleanup.
+
+## Testing and release safety
+
+The verification system combines Flutter tests, SQL regressions, browser flows, and deployment checks. QA inventory is derived from routes, tabs, services, RPCs, migrations, and shipped history so that test ownership can be checked as the product changes.
+
+**Inventory is not coverage.** Assigning an owner to a workflow does not prove every behavior is tested. The broad desktop/mobile browser gate is manual to control CI cost; it should not be confused with the smaller blocking runtime smoke check.
+
+The release path backs up production before migrations, checks schema drift, tests a preview candidate, and promotes only after browser smoke passes. Formatting, static analysis, secret scanning, and release-policy checks provide additional gates.
+
+No current Lighthouse score, reconciled line-coverage percentage, or full current-release cross-browser result is claimed here. Historical test totals are not presented as continuously verified production metrics.
+
+## Outcome
+
+The engineering outcome is a production-deployed marketplace with direct booking, quote-to-booking, package core, multi-member provider operations, role-aware dashboards, notifications, moderation, observability, and a controlled release path.
+
+The work also produced a reusable approach to verification: connect the inventory to shipped behavior, check state at its authoritative source, and require evidence before accepting a change.
+
+Launch validation remains distinct from deployment. Provider seeding and stranger testing were still active in the documented stage, and billing remained deferred. Adoption, revenue, retention, booking completion rates, and quantified development-speed improvements are not established by this case study.
+
+## Lessons
+
+**Product behavior and database behavior must describe the same system.** A member-aware picker cannot compensate for provider-wide conflict enforcement.
+
+**A working screen is not a verified workflow.** State changes need identity checks, stable records, authoritative-state assertions, and cleanup.
+
+**AI assistance does not transfer responsibility.** Scoped context, approval boundaries, and independently observed behavior matter more than a persuasive implementation summary.
+
+**Deferral is a product decision.** A smaller truthful capability set is better than a larger interface whose operational model is unfinished.

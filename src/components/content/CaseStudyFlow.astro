@@ -1,0 +1,114 @@
+---
+interface Step {
+  label: string;
+  title: string;
+  detail: string;
+  technical?: boolean;
+}
+interface Props {
+  id: string;
+  caption: string;
+  steps: Step[];
+}
+const { id, caption, steps } = Astro.props;
+---
+
+<figure class="case-study-flow" aria-labelledby={`${id}-caption`}>
+  <ol role="list">
+    {steps.map((step, index) => (
+      <li class:list={{ technical: step.technical }}>
+        <span class="flow-index" aria-hidden="true">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <p class="flow-label">{step.label}</p>
+        <p class="flow-title">{step.title}</p>
+        <p class="flow-detail">{step.detail}</p>
+      </li>
+    ))}
+  </ol>
+  <figcaption id={`${id}-caption`}>{caption}</figcaption>
+</figure>
+<style>
+  .case-study-flow {
+    container-type: inline-size;
+    padding-block: 1.75rem;
+    border-block: 1px solid var(--border);
+  }
+  ol {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    position: relative;
+    min-width: 0;
+    padding: 0 0 2rem 3rem;
+  }
+  li:last-child {
+    padding-bottom: 0;
+  }
+  li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 2rem;
+    bottom: 0.5rem;
+    left: 0.875rem;
+    border-left: 1px solid var(--border);
+  }
+  .flow-index {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--text-accent);
+    font: 0.75rem/1.75 var(--font-mono);
+    border-top: 2px solid var(--terracotta);
+    width: 1.75rem;
+    padding-top: 0.25rem;
+  }
+  .technical .flow-index {
+    color: var(--cobalt);
+    border-color: var(--cobalt);
+  }
+  .flow-label {
+    color: var(--text-secondary);
+    font: 0.6875rem/1.6 var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+  .flow-title {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .flow-detail {
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.65;
+  }
+  figcaption {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  @container (min-width: 38rem) {
+    ol {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+    }
+    li,
+    li:last-child {
+      padding: 2.75rem 0 0;
+    }
+    li:not(:last-child)::after {
+      top: 0.875rem;
+      bottom: auto;
+      left: 2.25rem;
+      right: -1.5rem;
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
+  }
+</style>
