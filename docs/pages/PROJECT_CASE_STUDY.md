@@ -51,7 +51,7 @@ Suggested TOC:
 - Lessons
 - Links
 
-Only render sections with meaningful content.
+Only render sections with meaningful content. These are supported topics, not a mandatory list of separate headings; consolidate them when that improves the main story.
 
 ---
 
@@ -172,3 +172,13 @@ Use captions.
 - diagrams may switch to stacked versions
 - tables become cards/definition lists only where necessary
 - preserve technical depth
+
+---
+
+## Approved refinement — product-first reading (2026-09-23)
+
+Findavia establishes a shorter main narrative with optional technical depth. Keep the product, responsibility, decisions, architectural boundary, concrete AI example, outcome, and material limitations visible. Put longer debugging, integration, and verification notes in native expandable details under one Engineering detail heading. Do not turn the page back into an internal repository audit.
+
+Use the reusable `content/TechnicalDetail.astro` component with a unique `id`, short `index`, and descriptive `title`. It uses semantic `details` and `summary`, defaults closed, and needs no client JavaScript. Verify keyboard opening/closing, expanded content accessibility, and reflow. Do not hide important qualifications or the only account of Martin's role inside it.
+
+When approved real media exist, the shared case header may use a 5/7 text/media split at desktop widths. Mobile reads title, summary, metadata, then image. Without media it remains text-led. Images must be local, optimized, meaningfully described, and labelled with their capture context. A crop must not fabricate or misrepresent UI. The project collection supplies the same evidence to Home and Work rather than duplicating content.

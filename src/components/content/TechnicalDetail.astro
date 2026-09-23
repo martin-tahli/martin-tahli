@@ -1,0 +1,74 @@
+---
+interface Props {
+  id: string;
+  index: string;
+  title: string;
+}
+const { id, index, title } = Astro.props;
+---
+
+<details class="technical-detail" id={id}>
+  <summary>
+    <span class="detail-kicker">Technical detail / {index}</span>
+    <span class="detail-title">{title}</span>
+    <span class="detail-toggle" aria-hidden="true"></span>
+  </summary>
+  <div class="detail-body">
+    <slot />
+  </div>
+</details>
+<style>
+  .technical-detail {
+    border-top: 1px solid var(--border);
+  }
+  summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem 1rem;
+    padding-block: 1.5rem;
+    list-style: none;
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .detail-kicker {
+    grid-column: 1;
+    color: var(--text-accent);
+    font: 0.6875rem/1.6 var(--font-mono);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .detail-title {
+    grid-column: 1;
+    font: 600 1rem/1.5 var(--font-body);
+  }
+  .detail-toggle {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    color: var(--text-accent);
+    font: 1.5rem/1 var(--font-body);
+  }
+  .detail-toggle::before {
+    content: '+';
+  }
+  [open] .detail-toggle::before {
+    content: '−';
+  }
+  .detail-body {
+    padding-bottom: 1.75rem;
+    font-size: 1rem;
+  }
+  .detail-body > :global(* + *) {
+    margin-top: 1.25rem;
+  }
+  .detail-body :global(h3) {
+    margin-top: 1.75rem;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+  }
+  .detail-body :global(h3:first-child) {
+    margin-top: 0;
+  }
+</style>

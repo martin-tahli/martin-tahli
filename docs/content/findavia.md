@@ -1,51 +1,61 @@
 # Findavia case-study editorial contract
 
-Decision recorded: 2026-09-23. Martin approved adapting the supplied Findavia engineering case study into the portfolio on a separate branch.
+Decision updated: 2026-09-23. Martin approved improving the existing Findavia branch with a shorter narrative, optional technical depth, and real product media. This supersedes the initial ten-section narrative and text-only project presentation.
 
-## Placement
+## Placement and publication boundary
 
-The canonical content is `src/content/projects/findavia.mdx`. Its slug is `findavia`, it is featured, and it uses the existing `/work/[slug]` template. The normal content collection adds it to Home and Work automatically; do not duplicate its summary in page components. On the current project-path deployment, the route is `/martin-tahli/work/findavia/`. Root deployment remains supported by the existing path utilities.
+Canonical content: `src/content/projects/findavia.mdx`. Slug: `findavia`. Featured on Home, discoverable on Work, rendered by the shared `/work/[slug]` template. The current project-path route is `/martin-tahli/work/findavia/`; alternate-root deployment remains supported. Do not duplicate the project summary in page components.
 
-This content approval does not authorize merging this branch, changing indexing, renaming the repository, or deploying to a new target.
+Keep `feat/findavia-case-study` and PR #8 unmerged for Martin's review. This work does not authorize merging, enabling indexing, changing repository identity, or deploying to a new target.
 
-## Editorial direction
+## Reading structure
 
-Lead with the product and Martin's responsibility. Demonstrate product decisions, architecture, failures and corrections, AI-assisted verification, and delivery limits. Findavia supports the AI-native engineering position through its development workflow; do not recast it as a customer-facing agentic or AI-powered product.
+The main narrative covers Overview, Product decisions, Architecture, AI-assisted engineering, and Outcome. Keep it around 600 words, excluding the diagram and optional detail. It must answer what Findavia is, who it serves, what Martin owned, what decisions mattered, and what the documented outcome does and does not establish.
 
-Keep the public page in the existing Warm Mono Hybrid reading layout. It uses shared callouts, generated section navigation, and two text-based system diagrams. The diagrams describe source-supported flows, not product screenshots. No new dependencies, hydration, external embeds, or global style changes are required.
+An Engineering detail section contains three native `TechnicalDetail.astro` disclosures: booking/account boundaries; AI-assisted verification; and integrations/release/evidence limits. Default closed, keyboard-operable, usable without JavaScript. The material remains in the static HTML. Do not hide important project-stage limitations inside a disclosure; they stay visible in Overview and Outcome.
 
-Home and Work intentionally use the existing text-led project variant until approved real media are available. Do not manufacture screenshots to fill the image slot.
+The page uses the shared Warm Mono Hybrid layout, a media-led 5/7 opening when an image exists, one visible architecture diagram, and a second method diagram inside the AI detail. Image-less entries retain a text-led fallback. Mobile becomes a deliberate text-then-media sequence. No added hydration, dependencies, third-party embeds, or global style changes.
+
+## Real media provenance
+
+Asset: `src/assets/findavia/discovery.webp`.
+
+- Source: the anonymous public homepage at `https://findavia.com/`.
+- Capture: 2026-09-23 at 12:57:10 UTC, Chromium, 1440 by 960 viewport; HTTP 200.
+- The full source screenshot was cropped to `(255, 118, 1185, 570)` and resized to 780 by 379 pixels. WebP, quality 65, 16,636 bytes.
+- Git blob: `792c29d8bc37fc5a4cb08d530d8f5d6469d27891`.
+- The crop shows actual Bulgarian public discovery copy, service and city fields, and service shortcuts. It is not a generated mockup. No UI elements or data were invented or composited.
+- A separate anonymous 390 by 844 mobile capture was inspected but is not the production asset. The portfolio itself renders responsively; do not describe its mobile rendition of this crop as a native mobile-product screenshot.
+- No authenticated pages, credentials, private customer data, bookings, or other state-changing actions were used. The temporary capture allowed only GET, HEAD, and OPTIONS. The one-time acquisition test is removed from the final tree; normal portfolio tests remain offline with respect to Findavia.
+- Acquisition evidence: workflow run `35863659460`, artifact `10751780084`. The public page capture is visual evidence, not proof that booking, search, or authenticated workflows passed functional testing.
+
+The caption identifies the capture date and crop. `liveUrl` now points to the observed public homepage. Home and Work consume the same real image through the existing content collection. Astro processes it locally; the portfolio does not hotlink the image or fetch Findavia at runtime.
 
 ## Source and claim boundaries
 
-The source is the user-supplied **Findavia — Engineering Case Study** (`Pasted markdown.md` in the portfolio conversation). That document reports a repository review; this portfolio change does not rerun or independently certify the Findavia application.
+Engineering claims remain grounded in Martin's supplied **Findavia — Engineering Case Study** (`Pasted markdown.md`). The document reports a repository review; this portfolio change does not rerun or independently certify the Findavia application. Public media acquisition adds only the observed discovery surface, its URL, and its capture date.
 
-The source supports the primary product engineer / repository maintainer role; direct booking, quote-to-booking, package core and multi-member operations; Flutter and Supabase architecture; the booking-concurrency and role-boundary corrections; constrained AI-assisted development; and lifecycle QA and release gates.
+The supplied source supports primary product-engineer/repository-maintainer responsibility, the shared solo/company provider model, committed member assignment, deferred monetization, the direct Flutter/Supabase architecture, the booking-concurrency and account-authority corrections, constrained AI assistance, and lifecycle QA and release gates.
 
-The stated delivery stage is production-deployed with launch validation, provider seeding, and stranger testing ongoing, with billing deferred. `status: live` means deployed, not commercially validated. Preserve the explicit distinction in the overview and outcome.
+The documented stage is production-deployed, with launch validation, provider seeding, and stranger testing ongoing and billing deferred. `status: live` means deployed, not commercially validated. This stage is from the source snapshot; capturing the current homepage does not independently refresh the product roadmap.
 
-The source does not establish a delivery timeline, development hours, user adoption, revenue, retention, speed gains, current performance scores, complete current-release cross-browser validation, or precise human/AI authorship percentages. Do not infer them from commit dates, configuration thresholds, or tool availability.
+Do not invent a development timeline, hours, adoption, revenue, retention, quantified speed gains, customer interviews, personal acceptance/rejection of a particular AI proposal, current performance scores, or full current-release cross-browser validation. Those gaps cannot be filled by rewriting. AI here refers to the development workflow, not a customer-facing autonomous agent.
 
-The source review reports 1,123 local Flutter tests, 212 owned QA inventory keys, and 64 Playwright spec files. These are different measures, not percentages of coverage. They are intentionally omitted from the public page until a dated report identifies the commit, environment, exact commands, results, and limitations. Do not relabel them as current checks performed by this portfolio change.
+The source reports 1,123 local Flutter tests, 212 owned QA inventory keys, and 64 Playwright spec files. These are different measures, not coverage percentages. Keep them out of the public page until a dated report identifies commit, environment, exact commands, results, and limitations. Portfolio CI totals must never be presented as Findavia application test results.
 
-Source visibility was confirmed as private through repository metadata. Do not expose a source-code link. Project dates, live/demo URLs, product images, and videos remain absent rather than guessed.
+Source visibility is private. Do not expose the private code link. No unverified project year, demo recording, customer feedback, or attributed AI-decision anecdote is added. Keep the internal recruiter audit and unanswered research questionnaire out of the public narrative.
 
 ## Source map
 
-- Overview and role: Project Snapshot, What I built, and Short Project Version.
-- Product decisions: The decisions that mattered, including one provider model, committed member assignment, and deferred monetization.
-- Architecture diagram: Architecture and the proposed trust-boundary visual. It omits optional integration branches rather than inventing connections.
-- Product diagram: The problem and What I built. It is a conceptual product flow, not a claim that every actor follows one mandatory sequence.
-- AI-assisted engineering: How AI was used and the independently checked accessibility fix.
-- Challenges: the member-level availability conflict and layered role-escalation correction.
-- Testing and outcome: Verification, Outcome, and the explicit Questions / Missing Evidence limitations.
-
-The internal recruiter audit and unanswered research questions are not published as case-study sections.
+- Overview and responsibility: Project Snapshot, What I built, Short Project Version.
+- Decisions: one provider model, member assignment, and deferred monetization.
+- Architecture: the documented client/services/database trust boundary.
+- AI example: the independently checked accessibility regression fix.
+- Technical disclosures: member-calendar enforcement, the layered role-escalation correction, QA handoff evidence, integrations, and release gates.
+- Outcome and limitations: Verification, Outcome, and Questions / Missing Evidence.
 
 ## Verification
 
-`tests/e2e/findavia.spec.ts` checks Home/Work discovery, the generated detail route, metadata, private-source handling, diagram semantics, working section targets, keyboard navigation, accessibility, reflow, reduced motion, no-JavaScript reading, and screenshots for review. It skips the isolated fixture build because that collection must not include production projects.
+Run the existing self-hosted pipeline without weakening its gates. Tests cover Home/Work image and link discovery, case metadata and privacy, image decoding, six section targets, collapsed and expanded accessibility, native keyboard disclosure behavior, all-detail reflow at narrow/tablet/desktop widths and enlarged text, reduced motion, no-JavaScript operation, and screenshot capture. Production checks intentionally skip the isolated synthetic-content build.
 
-Run the repository's existing `npm run verify` and alternate-root verification. Do not weaken the workflow or self-hosted runner checks to accommodate this content. A screenshot capture is evidence for review, not automatic visual approval. Record actual execution results in the branch/PR handoff.
-
-Before adding further claims, obtain a dated validation report and approved media. Update this contract when those facts are confirmed instead of leaving contradictory alternatives in the page.
+Retain separate root, project, and fixture reports. Inspect actual desktop/mobile main-story, expanded-detail, and homepage-placement screenshots. A captured image is not automatic visual approval; record observations and actual run results in the PR. No merge or deployment is part of this iteration.
