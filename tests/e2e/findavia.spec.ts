@@ -44,7 +44,9 @@ test.describe('Findavia case study', () => {
     expect(response?.status()).toBe(200);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.getByRole('main')).toHaveCount(1);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Findavia');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+      'Findavia',
+    );
     const canonicalUrl = `${site.origin}${withBase(route, site.base)}`;
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
@@ -54,16 +56,20 @@ test.describe('Findavia case study', () => {
       'content',
       /Findavia/,
     );
-    await expect(page.getByText('Private source', { exact: true })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Source code' })).toHaveCount(0);
+    await expect(
+      page.getByText('Private source', { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Source code' })).toHaveCount(
+      0,
+    );
     await expect(page.locator('a[href="https://findavia.com"]')).toHaveCount(1);
     await expect(page.locator('.project-media img')).toHaveJSProperty(
       'complete',
       true,
     );
-    const loaded = await page.locator('.project-media img').evaluate(
-      (element: HTMLImageElement) => element.naturalWidth > 0,
-    );
+    const loaded = await page
+      .locator('.project-media img')
+      .evaluate((element: HTMLImageElement) => element.naturalWidth > 0);
     expect(loaded).toBe(true);
     await expect(page.locator('.project-media figcaption')).toContainText(
       '23 September 2026',
@@ -79,7 +85,9 @@ test.describe('Findavia case study', () => {
     expect(await article.textContent()).toContain('Inventory is not coverage');
     const body = await article.textContent();
     expect(body).not.toMatch(/1,123|212 shipped keys|64 Playwright/);
-    expect(body).not.toMatch(/Recruiter Signal Audit|Questions \/ Missing Evidence/);
+    expect(body).not.toMatch(
+      /Recruiter Signal Audit|Questions \/ Missing Evidence/,
+    );
     expect(body).not.toContain('DO_NOT_PUBLISH_FIXTURE');
     expect(
       await page.evaluate(
@@ -146,7 +154,9 @@ test.describe('Findavia case study', () => {
   }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(withBase(route, site.base));
-    for (const summary of await page.locator('.technical-detail summary').all()) {
+    for (const summary of await page
+      .locator('.technical-detail summary')
+      .all()) {
       await summary.click();
     }
     for (const width of [320, 768, 1440]) {
@@ -193,7 +203,9 @@ test.describe('Findavia case study', () => {
       await detail.locator('summary').click();
       await expect(detail).toHaveAttribute('open', '');
       await expect(detail.locator('.case-study-flow')).toBeVisible();
-      await page.getByRole('link', { name: '← Back to work', exact: true }).click();
+      await page
+        .getByRole('link', { name: '← Back to work', exact: true })
+        .click();
       expect(new URL(page.url()).pathname).toBe(withBase('/work/', site.base));
     } finally {
       await context.close();
@@ -219,7 +231,9 @@ test.describe('Findavia case study', () => {
     });
     const detail = page.locator('#findavia-ai-verification');
     await detail.locator('summary').click();
-    await detail.screenshot({ path: testInfo.outputPath('findavia-detail.png') });
+    await detail.screenshot({
+      path: testInfo.outputPath('findavia-detail.png'),
+    });
     await page.goto(withBase('/', site.base));
     await page.evaluate(() => document.fonts.ready);
     const project = page.locator('.project-card').filter({

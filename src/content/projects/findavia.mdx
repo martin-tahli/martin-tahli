@@ -112,19 +112,20 @@ The decisions above are the main story. These notes retain the implementation de
   <h3>Availability and enforcement must use the same unit</h3>
   <p>
     The availability picker was member-aware while the database overlap trigger
-    operated at provider level. Two employees could appear available but still be
-    prevented from working simultaneously. The correction aligned enforcement
-    with member-level availability, with SQL controls for permitted parallel work
-    and genuine conflicts.
+    operated at provider level. Two employees could appear available but still
+    be prevented from working simultaneously. The correction aligned enforcement
+    with member-level availability, with SQL controls for permitted parallel
+    work and genuine conflicts.
   </p>
   <h3>A profile read must not assign a role</h3>
   <p>
     Lifecycle QA found that unresolved role lookup could mount provider code and
     that a profile-fetch operation could create a provider record. Provider
-    ownership then influenced role resolution. The correction made the repository
-    read-only, made routing fail closed while authority was unknown, and removed
-    direct client insert permission. Tests and live QA checked cleanup and denial
-    of direct escalation; a route-only patch would have left a database path open.
+    ownership then influenced role resolution. The correction made the
+    repository read-only, made routing fail closed while authority was unknown,
+    and removed direct client insert permission. Tests and live QA checked
+    cleanup and denial of direct escalation; a route-only patch would have left
+    a database path open.
   </p>
   <p>
     This changed the completion contract: stable record IDs, authoritative
@@ -189,23 +190,25 @@ The decisions above are the main story. These notes retain the implementation de
   </p>
   <h3>Keep external services outside the client’s trust boundary</h3>
   <p>
-    Realtime supports in-app updates. Database-backed notification dispatch moves
-    through an Edge Function to Resend or Firebase Cloud Messaging. Integration
-    secrets stay outside the client. Sentry receives scrubbed crash data and
-    PostHog analytics are consent-gated. Vercel serves the web bundle; prerendering
-    supplies visible HTML, canonical metadata, and a sitemap for public routes.
+    Realtime supports in-app updates. Database-backed notification dispatch
+    moves through an Edge Function to Resend or Firebase Cloud Messaging.
+    Integration secrets stay outside the client. Sentry receives scrubbed crash
+    data and PostHog analytics are consent-gated. Vercel serves the web bundle;
+    prerendering supplies visible HTML, canonical metadata, and a sitemap for
+    public routes.
   </p>
   <h3>Separate deployment evidence from production validation</h3>
   <p>
     The release path backs up production before migrations, checks schema drift,
-    tests a preview candidate, and promotes after browser smoke passes. Formatting,
-    static analysis, secret scanning, and release-policy checks add further gates.
+    tests a preview candidate, and promotes after browser smoke passes.
+    Formatting, static analysis, secret scanning, and release-policy checks add
+    further gates.
   </p>
   <p>
-    This case study documents an engineering snapshot, not a full current-release
-    production validation. No current Lighthouse score, line-coverage percentage,
-    or complete current-release cross-browser result is claimed. Historical test
-    totals remain omitted until a dated report identifies their commit,
-    environment, commands, results, and limitations.
+    This case study documents an engineering snapshot, not a full
+    current-release production validation. No current Lighthouse score,
+    line-coverage percentage, or complete current-release cross-browser result
+    is claimed. Historical test totals remain omitted until a dated report
+    identifies their commit, environment, commands, results, and limitations.
   </p>
 </TechnicalDetail>

@@ -56,12 +56,6 @@ jobs:
         run: npm ci
       - name: Verify formatting, lint, types, and unit contracts
         run: npm run format:check && npm run lint && npm run check && npm test
-      - name: Retain formatter diagnostics without modifying source
-        if: failure()
-        run: |
-          mkdir -p test-results/format
-          ./node_modules/.bin/prettier src/content/projects/findavia.mdx > test-results/format/findavia.mdx
-          ./node_modules/.bin/prettier tests/e2e/findavia.spec.ts > test-results/format/findavia.spec.ts
       - name: Install Chromium without changing host system packages
         run: npx playwright install chromium
       - name: Check browser runtime prerequisites
