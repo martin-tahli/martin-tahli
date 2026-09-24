@@ -107,8 +107,8 @@ The main story is the decision boundary. These notes preserve the implementation
   <p>
     Publication defaults to draft. Shared queries enforce visibility before
     pages consume content; case-study routes also require explicit availability
-    and a non-empty body. Optional profile fields remain absent until known.
-    A missing CV PDF produces an honest contact action, not a broken download.
+    and a non-empty body. Optional profile fields remain absent until known. A
+    missing CV PDF produces an honest contact action, not a broken download.
   </p>
   <p>
     Professional content builds from <code>src/content</code> to
@@ -130,10 +130,10 @@ The main story is the decision boundary. These notes preserve the implementation
   title="A deployment failure that changed the pipeline"
 >
   <p>
-    The first self-hosted workflow used a runner-context expression where
-    GitHub Actions could not resolve it. Moving browser-path setup into an
-    executing step fixed that boundary. The next run built the site, but
-    Chromium could not start because a shared library was missing.
+    The first self-hosted workflow used a runner-context expression where GitHub
+    Actions could not resolve it. Moving browser-path setup into an executing
+    step fixed that boundary. The next run built the site, but Chromium could
+    not start because a shared library was missing.
   </p>
   <p>
     Browser checks were not removed. An explicit startup preflight made the
@@ -157,10 +157,10 @@ The main story is the decision boundary. These notes preserve the implementation
 >
   <p>
     Formatting, linting, type diagnostics, unit contracts, static builds, and
-    browser checks cover different risks. The pipeline exercises both root
-    and project-prefix deployments, plus an isolated fixture build. Browser
-    checks include keyboard navigation, accessibility scans, no-JavaScript
-    behavior, narrow reflow, reduced motion, and text/font failure states.
+    browser checks cover different risks. The pipeline exercises both root and
+    project-prefix deployments, plus an isolated fixture build. Browser checks
+    include keyboard navigation, accessibility scans, no-JavaScript behavior,
+    narrow reflow, reduced motion, and text/font failure states.
   </p>
   <p>
     The supplied evidence review was dated 19 September 2026. Its test totals
