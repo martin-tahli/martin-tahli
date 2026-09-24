@@ -54,6 +54,8 @@ jobs:
           printf 'PLAYWRIGHT_BROWSERS_PATH=%s/portfolio-playwright\n' "$RUNNER_TEMP" >> "$GITHUB_ENV"
       - name: Install locked dependencies
         run: npm ci
+      - name: Inspect portfolio MDX formatter output
+        run: npx prettier src/content/projects/portfolio-engineering.mdx
       - name: Verify formatting, lint, types, and unit contracts
         run: npm run format:check && npm run lint && npm run check && npm test
       - name: Install Chromium without changing host system packages
