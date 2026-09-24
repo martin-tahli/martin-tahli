@@ -1,0 +1,179 @@
+---
+title: Portfolio publishing system
+slug: portfolio-engineering
+summary: A static publishing system with explicit content approval, isolated test fixtures, and verified release boundaries.
+description: 'Engineering this portfolio: publication rules, AI-assisted iteration, and a static delivery pipeline that keeps test content out of the live build.'
+draft: false
+featured: false
+status: in-progress
+role: Product and systems engineering
+visibility: public
+technologies:
+  - Astro
+  - TypeScript
+  - MDX
+  - Playwright
+  - GitHub Actions
+categories:
+  - Engineering
+  - Architecture
+caseStudyAvailable: true
+liveUrl: https://martin-tahli.github.io/martin-tahli/
+githubUrl: https://github.com/martin-tahli/martin-tahli
+---
+
+import CaseStudyFlow from '../../components/content/CaseStudyFlow.astro';
+import TechnicalDetail from '../../components/content/TechnicalDetail.astro';
+import { withBase } from '../../utils/paths';
+
+## Overview
+
+This portfolio is also a small publishing system: it turns project evidence into readable case studies for recruiters, engineering managers, and consulting prospects.
+
+It began with incomplete professional content and a visual reference containing placeholders. The challenge was to make the site useful without letting unfinished material look like established work. I owned product scope, architecture, publication policy, and visual acceptance; AI supported analysis, implementation, and review.
+
+**Stage:** deployed, non-indexed preview. This is supporting engineering work, not a commercially validated product or a customer-facing AI agent.
+
+## Decisions
+
+### 01. A file is not permission to publish
+
+Typed content schemas and shared queries require explicit publication, hide future notes, and reject duplicate slugs or empty case studies. Source-code links require explicitly public repository visibility.
+
+**Tradeoff:** less content at first, but fewer ways for unfinished work to escape into the site. These checks enforce publication rules; they cannot establish whether a professional claim is true. Factual approval remains human.
+
+### 02. Test the template without inventing a portfolio
+
+Synthetic projects and notes exercise the real templates, but build separately from professional content. Their output, cache, and indexing rules are isolated; the deployment gate rejects fixture markers in the public artifact.
+
+**Tradeoff:** an extra build to maintain, in exchange for testing draft, private-source, and missing-content states without presenting synthetic work as mine.
+
+### 03. Keep the runtime smaller than the content
+
+Astro renders static pages from MDX. Native HTML provides the mobile-menu baseline, with a small enhancement for Escape dismissal and focus return. A CMS and client application were deferred because neither solved a current requirement.
+
+**Tradeoff:** publishing is a repository workflow rather than an in-browser editor. More dynamic requirements would need a new architectural decision.
+
+## Architecture
+
+Specifications define the product and visual contracts. Typed content flows through shared publication queries into static routes; verification then controls what may reach GitHub Pages.
+
+<CaseStudyFlow
+  id="portfolio-publication-flow"
+  caption="Two different responsibilities: people approve the evidence; code checks publication and delivery rules. Neither replaces the other."
+  steps={[
+    {
+      label: 'Editorial boundary',
+      title: 'Review the evidence',
+      detail: 'Human approval, explicit drafts, and typed MDX metadata.',
+    },
+    {
+      label: 'Application boundary',
+      title: 'Build static routes',
+      detail: 'Shared queries control visibility and route validity.',
+      technical: true,
+    },
+    {
+      label: 'Delivery boundary',
+      title: 'Verify before release',
+      detail: 'Browser checks and fixture rejection gate the main build.',
+    },
+  ]}
+/>
+
+The same content path now carries <a href={withBase('/work/findavia/', import.meta.env.BASE_URL)}>Findavia</a>. Adding real work does not require a new page implementation.
+
+## AI-assisted iteration
+
+AI worked within a hierarchy of product requirements, design rules, component contracts, and page specifications. Generated references could guide composition, not supply professional facts.
+
+The homepage provided a concrete feedback loop. An audit found an overlong tablet stack and a diagram that read like a detached card. The revision kept an intermediate asymmetric layout and integrated the diagram into the page. Browser checks added 200% text enlargement with webfonts blocked; human visual acceptance remained separate from the automated result.
+
+## Outcome
+
+The result is a deployed preview with reusable case-study templates, explicit publication rules, and a verification pipeline. Findavia provides a real production-content entry rather than a synthetic demonstration.
+
+The useful lesson is broader than the website: AI-assisted implementation still needs independent acceptance, and a passing build is only one part of release readiness. No hiring, traffic, conversion, performance, or development-speed improvement is claimed without measurements.
+
+## Engineering detail
+
+The main story is the decision boundary. These notes preserve the implementation evidence and its limits.
+
+<TechnicalDetail
+  id="portfolio-publication-detail"
+  index="01"
+  title="Publication rules and fixture isolation"
+>
+  <p>
+    Publication defaults to draft. Shared queries enforce visibility before
+    pages consume content; case-study routes also require explicit availability
+    and a non-empty body. Optional profile fields remain absent until known. A
+    missing CV PDF produces an honest contact action, not a broken download.
+  </p>
+  <p>
+    Professional content builds from <code>src/content</code> to
+    <code>dist</code>. Synthetic entries live under <code>tests/fixtures</code>
+    and build to <code>test-dist</code> with a separate cache. Test mode cannot
+    enable indexing. The deployable artifact is checked for fixture markers
+    before upload; fixture output is never the publication input.
+  </p>
+  <p>
+    This separates testing a template from claiming its examples are real. It
+    does not make the schema a fact checker: evidence review and explicit
+    publication approval are still required.
+  </p>
+</TechnicalDetail>
+
+<TechnicalDetail
+  id="portfolio-ci-detail"
+  index="02"
+  title="A deployment failure that changed the pipeline"
+>
+  <p>
+    The first self-hosted workflow used a runner-context expression where GitHub
+    Actions could not resolve it. Moving browser-path setup into an executing
+    step fixed that boundary. The next run built the site, but Chromium could
+    not start because a shared library was missing.
+  </p>
+  <p>
+    Browser checks were not removed. An explicit startup preflight made the
+    missing prerequisite visible, and operating-system provisioning stayed a
+    runner-image responsibility. Deployment remained blocked until the
+    environment was corrected.
+  </p>
+  <p>
+    Workflow-policy tests protect owner-controlled triggers, pinned actions,
+    read-only source permissions, and deployment only after successful main
+    verification. External pull-request code is not executed on these runners.
+    Those restrictions reduce exposure; they do not turn a self-hosted machine
+    into a security sandbox.
+  </p>
+</TechnicalDetail>
+
+<TechnicalDetail
+  id="portfolio-verification-detail"
+  index="03"
+  title="Verification strategy and evidence limits"
+>
+  <p>
+    Formatting, linting, type diagnostics, unit contracts, static builds, and
+    browser checks cover different risks. The pipeline exercises both root and
+    project-prefix deployments, plus an isolated fixture build. Browser checks
+    include keyboard navigation, accessibility scans, no-JavaScript behavior,
+    narrow reflow, reduced motion, and text/font failure states.
+  </p>
+  <p>
+    The supplied evidence review was dated 19 September 2026. Its test totals
+    describe that snapshot, not a permanent coverage claim. The public story
+    omits those totals and the now-obsolete claim that Work has no real
+    projects. Current change-specific results belong in the pull request.
+  </p>
+  <p>
+    No complete cross-browser, CV-print, recruiter-usability, or measured
+    performance result is established by that review. Repository evidence
+    supports decision ownership and an AI-assisted process, not a precise
+    manual-versus-generated authorship split.
+  </p>
+</TechnicalDetail>
+
+Implementation evidence: [publication queries](https://github.com/martin-tahli/martin-tahli/blob/83b79be64e6795654b0ababda4dc27b6c9bb18bd/src/utils/content.ts), [delivery policy](https://github.com/martin-tahli/martin-tahli/blob/83b79be64e6795654b0ababda4dc27b6c9bb18bd/.github/workflows/pages.yml), and [browser checks](https://github.com/martin-tahli/martin-tahli/blob/83b79be64e6795654b0ababda4dc27b6c9bb18bd/tests/e2e/site.spec.ts).
