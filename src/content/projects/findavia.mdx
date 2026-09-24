@@ -1,0 +1,214 @@
+---
+title: Findavia
+slug: findavia
+summary: One service marketplace for finding a provider, booking real availability, and coordinating the work.
+description: 'Building Findavia: product decisions, marketplace architecture, and AI-assisted engineering checked against real system behavior.'
+draft: false
+featured: true
+status: live
+role: Primary product engineer
+visibility: private
+technologies:
+  - Flutter / Dart
+  - Supabase
+  - Playwright
+  - GitHub Actions
+categories:
+  - Product
+  - Engineering
+  - Automation
+caseStudyAvailable: true
+liveUrl: https://findavia.com
+heroImage: ../../assets/findavia/discovery.webp
+heroAlt: Findavia's Bulgarian discovery interface with service and city search fields.
+heroCaption: Public discovery screen · captured 23 September 2026 · cropped.
+---
+
+import CaseStudyFlow from '../../components/content/CaseStudyFlow.astro';
+import TechnicalDetail from '../../components/content/TechnicalDetail.astro';
+
+## Overview
+
+Findavia is a Bulgarian service marketplace for customers, independent professionals, and multi-member companies. It connects discovery, direct booking, quote-based work, and provider operations in one application.
+
+As primary product engineer, I worked across product scope, architecture, AI-assisted implementation, database policies, verification, and deployment. The difficult part was not listing services. It was making each booking, calendar, and permission describe the same real-world work.
+
+**Documented stage:** production-deployed, with provider seeding and launch validation ongoing. Billing remains deferred. Deployment is not evidence of market validation.
+
+## Product decisions
+
+### 01. One provider model, from solo operator to company
+
+An individual is a provider with one member; a company has several. Both share booking, profile, and review workflows instead of becoming separate products.
+
+**Tradeoff:** fewer duplicated workflows, but a stricter distinction between provider, owner, and member identity. The model stays coherent only when permissions and calendars respect those differences.
+
+### 02. Book a person’s availability, not a place in a queue
+
+Customer-selected staff, with a stateless “most free time that day” fallback, ties each confirmed booking to a real member calendar. Pending assignment, round-robin state, and travel-time routing stayed out of v1.
+
+**What testing changed:** the picker understood members, but database conflict checks initially blocked an entire provider. The correction allowed different employees to work in parallel while still rejecting genuine conflicts. A product decision had to hold at both layers.
+
+### 03. Keep unfinished operations out of the promise
+
+Billing stayed behind a coming-soon state. General chat, escrow, advanced ranking, and complex package variants also remained outside launch scope.
+
+**Tradeoff:** a narrower first release, with supported workflows rather than a larger interface that implies unfinished capabilities are ready.
+
+## Architecture
+
+Flutter calls Supabase through services and repositories, without a custom API server. That removes a server tier, not the need for authorization: database policies, grants, caller checks, and constraints enforce the boundary.
+
+<CaseStudyFlow
+  id="findavia-architecture"
+  caption="Where the contract is enforced. Client routing guides the experience; the database decides what a caller may read or change."
+  steps={[
+    {
+      label: 'Experience',
+      title: 'Flutter interface',
+      detail: 'Customer, provider, and admin workflows.',
+    },
+    {
+      label: 'Application',
+      title: 'Services and repositories',
+      detail: 'Feature actions become table or RPC requests.',
+    },
+    {
+      label: 'Trust boundary',
+      title: 'Supabase / Postgres',
+      detail: 'RLS, grants, caller checks, and constraints.',
+      technical: true,
+    },
+  ]}
+/>
+
+This made schema changes part of application security. Forward-only migrations, SQL regressions, drift checks, and approval boundaries support that choice.
+
+## AI-assisted engineering
+
+AI assisted with requirements, planning, implementation, review, and debugging. I remained responsible for scope, architecture, and acceptance criteria.
+
+For one delegated accessibility fix, the change was removed, the regression test was observed failing, and the fix was restored. That checked whether the test detected the original failure, rather than merely passing beside a patch.
+
+Here, AI is part of the engineering workflow. This is not a claim that Findavia contains a customer-facing autonomous agent.
+
+## Outcome
+
+The result is a deployed marketplace covering direct booking, quote-to-booking, package core, multi-member operations, notifications, and moderation, with a controlled release path.
+
+The engineering lesson is specific: a working screen is not a verified workflow. Booking consistency and account authority needed checks against database state, not just interface behavior.
+
+Provider seeding and stranger testing were still active in the documented stage. Adoption, revenue, retention, and quantified development-speed gains are not established by this case study.
+
+## Engineering detail
+
+The decisions above are the main story. These notes retain the implementation depth and the limits of the available evidence.
+
+<TechnicalDetail
+  id="findavia-boundaries"
+  index="01"
+  title="Booking consistency and account authority"
+>
+  <h3>Availability and enforcement must use the same unit</h3>
+  <p>
+    The availability picker was member-aware while the database overlap trigger
+    operated at provider level. Two employees could appear available but still
+    be prevented from working simultaneously. The correction aligned enforcement
+    with member-level availability, with SQL controls for permitted parallel
+    work and genuine conflicts.
+  </p>
+  <h3>A profile read must not assign a role</h3>
+  <p>
+    Lifecycle QA found that unresolved role lookup could mount provider code and
+    that a profile-fetch operation could create a provider record. Provider
+    ownership then influenced role resolution. The correction made the
+    repository read-only, made routing fail closed while authority was unknown,
+    and removed direct client insert permission. Tests and live QA checked
+    cleanup and denial of direct escalation; a route-only patch would have left
+    a database path open.
+  </p>
+  <p>
+    This changed the completion contract: stable record IDs, authoritative
+    database checks, cross-account denials, and cleanup became part of workflow
+    verification. A visible button or populated list was not enough.
+  </p>
+</TechnicalDetail>
+
+<TechnicalDetail
+  id="findavia-ai-verification"
+  index="02"
+  title="Accepting AI-assisted work through observed behavior"
+>
+  <p>
+    Tasks were bounded by architecture, database, route, and security contracts.
+    Runtime code and migrations outranked documentation; active plans owned
+    current work and shipped summaries replaced stale plans. Sensitive contract
+    changes required explicit approval.
+  </p>
+  <CaseStudyFlow
+    id="findavia-ai-check"
+    caption="The documented accessibility regression check. This is a method for validating a fix, not a new test result from the portfolio build."
+    steps={[
+      {
+        label: 'Control',
+        title: 'Remove the fix',
+        detail: 'Reintroduce the original behavior.',
+      },
+      {
+        label: 'Observation',
+        title: 'See the test fail',
+        detail: 'Check that the regression is actually detected.',
+      },
+      {
+        label: 'Correction',
+        title: 'Restore the fix',
+        detail: 'Keep the correction and its regression check.',
+      },
+    ]}
+  />
+  <p>
+    QA handoffs recorded commands, build fingerprints, actor roles, writes,
+    database state, cleanup, blockers, and residual risk. An agent’s confidence
+    was not an acceptance criterion. The source does not establish a precise
+    human/AI authorship split or quantified speed improvement.
+  </p>
+</TechnicalDetail>
+
+<TechnicalDetail
+  id="findavia-release-evidence"
+  index="03"
+  title="Verification, integrations, and release limits"
+>
+  <h3>Check behavior, not inventory size</h3>
+  <p>
+    Flutter tests, SQL regressions, browser flows, and deployment checks cover
+    different layers. QA inventory is derived from routes, tabs, services, RPCs,
+    migrations, and shipped history. <strong>Inventory is not coverage.</strong>
+    Assigning an owner to a workflow does not prove every behavior is tested.
+    The broad desktop/mobile browser gate is manual; the smaller runtime smoke
+    check blocks promotion. These are not equivalent checks.
+  </p>
+  <h3>Keep external services outside the client’s trust boundary</h3>
+  <p>
+    Realtime supports in-app updates. Database-backed notification dispatch
+    moves through an Edge Function to Resend or Firebase Cloud Messaging.
+    Integration secrets stay outside the client. Sentry receives scrubbed crash
+    data and PostHog analytics are consent-gated. Vercel serves the web bundle;
+    prerendering supplies visible HTML, canonical metadata, and a sitemap for
+    public routes.
+  </p>
+  <h3>Separate deployment evidence from production validation</h3>
+  <p>
+    The release path backs up production before migrations, checks schema drift,
+    tests a preview candidate, and promotes after browser smoke passes.
+    Formatting, static analysis, secret scanning, and release-policy checks add
+    further gates.
+  </p>
+  <p>
+    This case study documents an engineering snapshot, not a full
+    current-release production validation. No current Lighthouse score,
+    line-coverage percentage, or complete current-release cross-browser result
+    is claimed. Historical test totals remain omitted until a dated report
+    identifies their commit, environment, commands, results, and limitations.
+  </p>
+</TechnicalDetail>

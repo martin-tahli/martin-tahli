@@ -37,3 +37,9 @@ Edit `src/data/profile.ts`. Optional values are absent until known. Never use br
 Confirm personal contribution, dates, technologies, outcomes, and source visibility. Remove private information, credentials, third-party confidential material, and unsupported metrics. Test links and image captions. Run local verification. Review the rendered page before publishing.
 
 Synthetic examples belong in `tests/fixtures`, not in production collections. `PORTFOLIO_TEST_CONTENT=true` builds to `test-dist` only. Never upload that directory as a site artifact.
+
+## Approved case-study decisions
+
+Findavia uses the existing featured-project collection and detail template. Its [editorial contract](content/findavia.md) records the approved framing, source basis, delivery limitations, and intentionally omitted evidence. Follow that contract when extending the case study rather than reopening settled positioning decisions.
+
+`src/components/content/CaseStudyFlow.astro` renders a three-step, text-based diagram without hydration. Supply a unique `id`, a factual `caption`, and three `steps`, each with `label`, `title`, `detail`, and optional `technical` emphasis. The narrow layout is stacked; the wide layout follows the available container width. Do not label diagrams as screenshots or invent flows to fill space.
