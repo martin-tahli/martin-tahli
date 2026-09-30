@@ -39,14 +39,14 @@ Treasury also has a what-if surface for proposed buys and sells.
 
 The important design decision is where the calculation happens.
 
-| Responsibility | Application | AI client |
-| --- | --- | --- |
-| Ingest broker data | Yes | No |
-| Normalize currencies and holdings | Yes | No |
-| Reconcile duplicated or inconsistent state | Yes | No |
-| Calculate proposed allocation and income effects | Yes | No |
-| Explain the returned scenario | Structured result | Yes |
-| Execute a trade | No | No |
+| Responsibility                                   | Application       | AI client |
+| ------------------------------------------------ | ----------------- | --------- |
+| Ingest broker data                               | Yes               | No        |
+| Normalize currencies and holdings                | Yes               | No        |
+| Reconcile duplicated or inconsistent state       | Yes               | No        |
+| Calculate proposed allocation and income effects | Yes               | No        |
+| Explain the returned scenario                    | Structured result | Yes       |
+| Execute a trade                                  | No                | No        |
 
 The scenario service computes allocation drift, income effects, projections, and goal impact from current application state. The proposed actions are not persisted and no trade is executed.
 

@@ -22,7 +22,10 @@ const notes = [
 ];
 
 test.describe('published engineering notes', () => {
-  test.skip(site.testContent, 'Production notes are not part of fixture builds.');
+  test.skip(
+    site.testContent,
+    'Production notes are not part of fixture builds.',
+  );
 
   test('replace the empty state on Home and Notes', async ({ page }) => {
     for (const route of ['/', '/notes/']) {
@@ -49,39 +52,40 @@ test.describe('published engineering notes', () => {
   });
 
   for (const note of notes) {
-    test(note.title + ' is accessible and linked to evidence', async ({
-      page,
-    }) => {
-      const response = await page.goto(
-        withBase('/notes/' + note.slug + '/', site.base),
-      );
-      expect(response?.status()).toBe(200);
-      await page.evaluate(() => document.fonts.ready);
+    test(
+      note.title + ' is accessible and linked to evidence',
+      async ({ page }) => {
+        const response = await page.goto(
+          withBase('/notes/' + note.slug + '/', site.base),
+        );
+        expect(response?.status()).toBe(200);
+        await page.evaluate(() => document.fonts.ready);
 
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-        note.title,
-      );
-      await expect(
-        page.getByRole('heading', { name: 'Related work' }),
-      ).toBeVisible();
-
-      for (const related of note.related) {
+        await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+          note.title,
+        );
         await expect(
-          page.getByRole('link', { name: related, exact: true }),
+          page.getByRole('heading', { name: 'Related work' }),
         ).toBeVisible();
-      }
 
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth <= innerWidth,
-        ),
-      ).toBe(true);
+        for (const related of note.related) {
+          await expect(
+            page.getByRole('link', { name: related, exact: true }),
+          ).toBeVisible();
+        }
 
-      const scan = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
-        .analyze();
-      expect(scan.violations).toEqual([]);
-    });
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+
+        const scan = await new AxeBuilder({ page })
+          .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+          .analyze();
+        expect(scan.violations).toEqual([]);
+      },
+    );
   }
 
   test('note articles reflow at narrow widths and 200% text', async ({
