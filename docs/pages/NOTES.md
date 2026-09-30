@@ -77,3 +77,29 @@ The first production notes establish an evidence-led editorial standard:
 
 Notes should deepen the evidence already present in Work, not manufacture a second parallel portfolio.
 
+---
+
+## Approved refinement — human engineering voice (2026-09-30)
+
+Notes should read like Martin explaining a real piece of work to another engineer.
+
+Writing rules:
+
+- open with the concrete incident, decision, or observation; establish what actually happened before extracting a principle
+- use first person where Martin made a decision, ran a check, found a bug, or changed his workflow
+- let technical specifics carry the authority instead of manufacturing punchy slogans
+- vary sentence and section rhythm; a note should not read like a sequence of generated claims followed by generated lessons
+- use lists and tables when they genuinely clarify information, not simply to make prose look structured
+- end with the practical consequence or current working habit when one exists
+
+Avoid recurring AI-writing patterns:
+
+- titles or conclusions built around `X is not Y`, `not X, but Y`, or equivalent forced contrasts
+- one-sentence paragraph chains used for dramatic emphasis
+- repeated phrases such as `the point is`, `the broader lesson`, `this matters because`, or `the pattern is the same`
+- staged rhetorical questions whose answer is immediately supplied by the article
+- slogan-like bold lines inserted mainly to sound quotable
+- mechanically symmetrical sections where every topic ends in a maxim
+
+The target voice is specific, reflective, technical, and conversational enough to sound written by the person who did the work.
+

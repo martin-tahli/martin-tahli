@@ -5,19 +5,19 @@ import { withBase } from '../../src/utils/paths';
 
 const notes = [
   {
-    slug: 'a-working-screen-is-not-a-verified-workflow',
-    title: 'A working screen is not a verified workflow',
+    slug: 'checking-a-regression-test',
+    title: 'How I check whether a regression test is doing its job',
+    related: ['Findavia →', 'Portfolio publishing system →'],
+  },
+  {
+    slug: 'verifying-a-booking-workflow',
+    title: 'The booking bug that changed how I verify workflows',
     related: ['Findavia →'],
   },
   {
-    slug: 'the-ai-should-not-become-the-accounting-engine',
-    title: 'The AI should not become the accounting engine',
+    slug: 'treasury-ai-boundary',
+    title: 'Where I drew the AI boundary in Treasury',
     related: ['Treasury →'],
-  },
-  {
-    slug: 'a-passing-test-is-not-evidence-unless-it-can-fail',
-    title: 'A passing test is not evidence unless it can fail',
-    related: ['Findavia →', 'Portfolio publishing system →'],
   },
 ];
 
@@ -27,16 +27,10 @@ test.describe('published engineering notes', () => {
     'Production notes are not part of fixture builds.',
   );
 
-  test('replace the empty state on Home and Notes', async ({ page }) => {
+  test('Home and Notes list the current articles', async ({ page }) => {
     for (const route of ['/', '/notes/']) {
       await page.goto(withBase(route, site.base));
       await expect(page.locator('.note-row')).toHaveCount(3);
-      await expect(
-        page.getByText('No notes are published yet.', { exact: true }),
-      ).toHaveCount(0);
-      await expect(
-        page.getByText('Nothing published yet.', { exact: true }),
-      ).toHaveCount(0);
 
       for (const note of notes) {
         const link = page.getByRole('link', {
@@ -48,6 +42,13 @@ test.describe('published engineering notes', () => {
           withBase('/notes/' + note.slug + '/', site.base),
         );
       }
+
+      await expect(
+        page.getByRole('link', {
+          name: 'A passing test is not evidence unless it can fail',
+          exact: true,
+        }),
+      ).toHaveCount(0);
     }
   });
 
@@ -93,10 +94,7 @@ test.describe('published engineering notes', () => {
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(
-      withBase(
-        '/notes/a-working-screen-is-not-a-verified-workflow/',
-        site.base,
-      ),
+      withBase('/notes/verifying-a-booking-workflow/', site.base),
     );
     await page.evaluate(() => {
       document.documentElement.style.fontSize = '200%';
