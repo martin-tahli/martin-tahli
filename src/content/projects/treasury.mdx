@@ -1,0 +1,211 @@
+---
+title: Treasury
+slug: treasury
+summary: A private wealth operating system that reconciles brokerage data, manual assets, and deterministic scenarios behind a bounded AI interface.
+description: 'Building Treasury: broker ingestion, financial reconciliation, correctness checks, and OAuth-protected MCP access for a private wealth operating system.'
+draft: false
+featured: true
+status: live
+role: Product & systems engineering
+visibility: private
+technologies:
+  - Python / FastAPI
+  - PostgreSQL
+  - Next.js / TypeScript
+  - Docker
+  - MCP
+categories:
+  - Product
+  - Engineering
+  - AI Systems
+  - Architecture
+caseStudyAvailable: true
+heroImage: ../../assets/treasury/system-map.svg
+heroAlt: Diagram of Treasury's financial data flow from Trading 212, Interactive Brokers, and manual assets through normalization and reconciliation to the wealth model and bounded AI interface.
+heroCaption: System map · based on the reviewed 19 September 2026 implementation snapshot.
+---
+
+import CaseStudyFlow from '../../components/content/CaseStudyFlow.astro';
+import TechnicalDetail from '../../components/content/TechnicalDetail.astro';
+
+## Overview
+
+Treasury is a self-hosted wealth operating system I built for private use. It combines brokerage investments from Trading 212 and Interactive Brokers with crypto, property, cash, pensions, manually valued assets, liabilities, and cash flows, then normalizes them into one view of net worth, performance, income, and allocation.
+
+I worked across product scope, architecture, broker ingestion, financial services, the read-only MCP surface, and automated verification. The hard part was not drawing charts. It was preserving the meaning of money as data crossed brokers, currencies, storage, derived calculations, and an AI client.
+
+**Documented stage:** private-use system. The AI surface is read-only; scenario tools calculate proposed actions but do not place trades or persist them.
+
+## Financial signal path
+
+A number is useful only if the system can preserve where it came from, how it was normalized, and whether the sources still agree.
+
+<CaseStudyFlow
+  id="treasury-signal-path"
+  caption="The operating contract: ingest source data, reconcile its meaning, then expose a bounded view. The AI client never becomes the accounting engine."
+  steps={[
+    {
+      label: 'Sources',
+      title: 'Broker + manual inputs',
+      detail:
+        'Trading 212, IBKR, crypto, property, cash, pensions, assets, and liabilities.',
+    },
+    {
+      label: 'Correctness boundary',
+      title: 'Normalize + reconcile',
+      detail:
+        'Currency, duplicates, cash semantics, cost basis, source failures, and freshness.',
+      technical: true,
+    },
+    {
+      label: 'Product surface',
+      title: 'Wealth model + bounded MCP',
+      detail:
+        'Net worth, performance, income, scenarios, and reliability-aware tool responses.',
+    },
+  ]}
+/>
+
+That boundary changes the product question from “can I display this value?” to “what would make this value misleading?”
+
+## Three boundaries that define the product
+
+### 01. Integrate source behavior, not just endpoints
+
+The Trading 212 client handles pagination, request pacing, retries, and rate limits, including Retry-After. Interactive Brokers has implemented paths for Client Portal Gateway data, Flex report retrieval and XML parsing, and CSV imports.
+
+The point is not the number of connectors. Each source has different freshness, authentication, pagination, and failure behavior, so ingestion has to preserve source-specific diagnostics instead of pretending every sync is equivalent.
+
+### 02. Reconcile financial meaning before reporting totals
+
+Treasury explicitly prevents broker cash from being counted twice when it appears both as a holding and in an account snapshot. It also avoids subtracting a margin debit twice when the same debt is already represented as negative cash.
+
+Reconciliation checks stored holdings and cash against broker-reported totals and surfaces missing exchange rates, duplicate broker references, missing cost basis, source failures, and stale synchronization. These are accounting semantics expressed as software constraints.
+
+### 03. Give AI a governed view, not database access
+
+The reviewed snapshot defines nine MCP tools for status, portfolio briefings, holdings, instrument detail, income, goals, debt, cash flow, and proposed-action analysis.
+
+The access boundary validates signed JWTs against configured issuer, audience, allowed subject, and project-role claims, and fails closed on verification errors. Tool responses distinguish no data, stale data, partial data, and unavailable sources, and include source-freshness information.
+
+That means an AI client receives both the answer and evidence about whether the underlying inputs are trustworthy enough to interpret.
+
+## Deterministic what-if, probabilistic interpretation
+
+The scenario engine evaluates proposed buys and sells in application code. It calculates allocation changes, income effects, projections, and goal impact without executing trades or persisting the proposed actions.
+
+<CaseStudyFlow
+  id="treasury-what-if"
+  caption="Responsibility stays explicit: application code calculates the scenario; an AI client may explain the returned result."
+  steps={[
+    {
+      label: 'Proposal',
+      title: 'Describe a hypothetical action',
+      detail:
+        'A buy or sell request enters as data, not as an execution instruction.',
+    },
+    {
+      label: 'Deterministic core',
+      title: 'Calculate the consequences',
+      detail:
+        'Allocation, income, benchmark assumptions, and goal effects are computed in application code.',
+      technical: true,
+    },
+    {
+      label: 'Interpretation',
+      title: 'Explain the result',
+      detail:
+        'The AI can reason over the bounded response without gaining trade execution.',
+    },
+  ]}
+/>
+
+This division matters more than adding a generic “AI assistant.” It keeps financial calculation and authorization in deterministic application boundaries.
+
+## Verification
+
+A regression test covers a subtle historical-FX failure: a transaction imported during synchronization must become visible to exchange-rate backfill and be resolved in the same run. The test controls external inputs and checks the stored pipeline result, rather than testing a helper in isolation.
+
+At the reviewed 19 September 2026 snapshot, the successful GitHub Actions run included Ruff, backend pytest tests, Python and JavaScript dependency audits, TypeScript checking, the frontend build, and Playwright. The inspected job log ended with **111 Playwright tests passed**.
+
+That is a dated regression signal, not a claim of 100% coverage or independently audited financial accuracy. Some tests isolate behavior without exercising every live broker path or the complete OAuth journey.
+
+## Engineering detail
+
+The main story is the set of trust boundaries. These notes keep the lower-level integration and verification evidence available without turning the case study into a repository audit.
+
+<TechnicalDetail
+  id="treasury-broker-detail"
+  index="01"
+  title="Broker ingestion, fallback paths, and freshness"
+>
+  <p>
+    Trading 212 API ingestion supports paced requests, pagination, retry
+    handling, and explicit rate-limit responses. Interactive Brokers supports a
+    Client Portal path for live positions/account data, a Flex Web Service path
+    for report retrieval and XML parsing, and CSV imports as a fallback.
+  </p>
+  <p>
+    Those modes should not be read as a claim that every path is simultaneously
+    configured or independently verified against a live account. The useful
+    engineering property is that source-specific failure and freshness state can
+    survive ingestion instead of disappearing behind one generic “sync” flag.
+  </p>
+</TechnicalDetail>
+
+<TechnicalDetail
+  id="treasury-correctness-detail"
+  index="02"
+  title="Financial correctness as regression behavior"
+>
+  <p>
+    Net-worth calculation has explicit guards for two domain errors: counting
+    broker cash twice when it is represented in more than one source structure,
+    and subtracting a margin debit twice when negative cash already carries the
+    liability.
+  </p>
+  <p>
+    Reconciliation adds diagnostics for missing FX rates, duplicate broker
+    references, missing cost basis, stale synchronization, and source failures.
+    Historical currency backfill is also covered by a pipeline regression where
+    newly imported transactions must be resolved during the same synchronization
+    run.
+  </p>
+  <p>
+    These checks are more useful than claiming that every financial number is
+    “accurate.” They show where correctness can fail and how the software
+    detects specific classes of error.
+  </p>
+</TechnicalDetail>
+
+<TechnicalDetail
+  id="treasury-mcp-detail"
+  index="03"
+  title="Read-only MCP containment and evidence limits"
+>
+  <p>
+    The MCP surface is a bounded product interface over existing read services,
+    not unrestricted database access. Its authorization layer validates signed
+    tokens and the configured project-role boundary; verification failures deny
+    access.
+  </p>
+  <p>
+    Tool payloads carry provenance and state information, and the what-if tool
+    remains pure computation even though its input resembles an action. It does
+    not write portfolio state or execute a trade.
+  </p>
+  <p>
+    The reviewed CI snapshot supports automated backend and browser regression
+    testing. It does not establish complete live-integration coverage, a full
+    OAuth audit, universal AI-client compatibility, customer adoption, or
+    commercial scale.
+  </p>
+</TechnicalDetail>
+
+## Outcome
+
+Treasury currently combines multi-asset wealth tracking, brokerage ingestion, financial reconciliation, net-worth and performance views, deterministic scenario analysis, and read-only AI access behind explicit reliability states.
+
+The strongest lesson is domain-specific: in financial software, missing, duplicated, stale, or semantically inconsistent data is not a presentation problem. It is product state that the system has to model.
+
+Treasury remains a private-use product. This case study does not claim trade execution, audited financial accuracy, public adoption, or commercial traction.

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Treasury financial signal map</title>
+  <desc id="desc">Trading 212, Interactive Brokers, and manual assets flow through normalization and reconciliation into a wealth model and a bounded read-only AI interface.</desc>
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#D8D2C8" stroke-width="1" opacity="0.35"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6F7480"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="760" fill="#F7F4EE"/>
+  <rect x="32" y="32" width="1136" height="696" rx="10" fill="url(#grid)" stroke="#D8D2C8"/>
+
+  <text x="76" y="92" fill="#B85B3C" font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="2">PRIVATE WEALTH SYSTEM</text>
+  <text x="76" y="132" fill="#1F1F1F" font-family="Inter, sans-serif" font-size="32" font-weight="600">Financial data → meaning → decision</text>
+  <text x="76" y="164" fill="#6F7480" font-family="Inter, sans-serif" font-size="15">A bounded flow that keeps source state and correctness visible.</text>
+
+  <g font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1.2">
+    <text x="76" y="230" fill="#6F7480">01 / SOURCES</text>
+    <text x="338" y="230" fill="#6F7480">02 / NORMALIZE</text>
+    <text x="576" y="230" fill="#B85B3C">03 / RECONCILE</text>
+    <text x="832" y="230" fill="#6F7480">04 / MODEL</text>
+    <text x="1020" y="230" fill="#2563EB">05 / MCP</text>
+  </g>
+
+  <g font-family="Inter, sans-serif">
+    <rect x="76" y="260" width="196" height="66" rx="6" fill="#FFFDFC" stroke="#D8D2C8"/>
+    <text x="94" y="286" fill="#1F1F1F" font-size="16" font-weight="600">Trading 212</text>
+    <text x="94" y="308" fill="#6F7480" font-size="13">API + history</text>
+
+    <rect x="76" y="342" width="196" height="66" rx="6" fill="#FFFDFC" stroke="#D8D2C8"/>
+    <text x="94" y="368" fill="#1F1F1F" font-size="16" font-weight="600">Interactive Brokers</text>
+    <text x="94" y="390" fill="#6F7480" font-size="13">Portal / Flex / CSV</text>
+
+    <rect x="76" y="424" width="196" height="82" rx="6" fill="#E8DCCC" stroke="#D8D2C8"/>
+    <text x="94" y="450" fill="#1F1F1F" font-size="16" font-weight="600">Manual assets</text>
+    <text x="94" y="472" fill="#6F7480" font-size="13">Property · cash · pensions</text>
+    <text x="94" y="492" fill="#6F7480" font-size="13">crypto · liabilities</text>
+
+    <rect x="338" y="292" width="174" height="174" rx="8" fill="#FFFDFC" stroke="#D8D2C8"/>
+    <text x="360" y="328" fill="#1F1F1F" font-size="18" font-weight="600">Normalize</text>
+    <text x="360" y="362" fill="#6F7480" font-size="13">Currency</text>
+    <text x="360" y="386" fill="#6F7480" font-size="13">Identifiers</text>
+    <text x="360" y="410" fill="#6F7480" font-size="13">Transactions</text>
+    <text x="360" y="434" fill="#6F7480" font-size="13">Freshness</text>
+
+    <rect x="576" y="270" width="202" height="218" rx="8" fill="#FFFDFC" stroke="#B85B3C" stroke-width="2"/>
+    <circle cx="604" cy="306" r="6" fill="#B85B3C"/>
+    <text x="624" y="312" fill="#1F1F1F" font-size="18" font-weight="600">Reconcile</text>
+    <text x="598" y="352" fill="#6F7480" font-size="13">cash counted once</text>
+    <text x="598" y="378" fill="#6F7480" font-size="13">margin not doubled</text>
+    <text x="598" y="404" fill="#6F7480" font-size="13">FX gaps surfaced</text>
+    <text x="598" y="430" fill="#6F7480" font-size="13">duplicates diagnosed</text>
+    <text x="598" y="456" fill="#6F7480" font-size="13">stale sources preserved</text>
+
+    <rect x="832" y="292" width="148" height="174" rx="8" fill="#FFFDFC" stroke="#D8D2C8"/>
+    <text x="852" y="328" fill="#1F1F1F" font-size="18" font-weight="600">Wealth model</text>
+    <text x="852" y="362" fill="#6F7480" font-size="13">Net worth</text>
+    <text x="852" y="386" fill="#6F7480" font-size="13">Performance</text>
+    <text x="852" y="410" fill="#6F7480" font-size="13">Income</text>
+    <text x="852" y="434" fill="#6F7480" font-size="13">Allocation</text>
+
+    <rect x="1020" y="292" width="116" height="174" rx="8" fill="#FFFDFC" stroke="#2563EB"/>
+    <circle cx="1044" cy="320" r="6" fill="#2563EB"/>
+    <text x="1060" y="326" fill="#1F1F1F" font-size="16" font-weight="600">MCP</text>
+    <text x="1040" y="362" fill="#6F7480" font-size="13">JWT gate</text>
+    <text x="1040" y="386" fill="#6F7480" font-size="13">read-only</text>
+    <text x="1040" y="410" fill="#6F7480" font-size="13">freshness</text>
+    <text x="1040" y="434" fill="#6F7480" font-size="13">provenance</text>
+  </g>
+
+  <g fill="none" stroke="#6F7480" stroke-width="1.5" marker-end="url(#arrow)">
+    <path d="M 272 293 C 302 293, 306 326, 338 326"/>
+    <path d="M 272 375 C 302 375, 306 375, 338 375"/>
+    <path d="M 272 465 C 302 465, 306 424, 338 424"/>
+    <path d="M 512 379 L 576 379"/>
+    <path d="M 778 379 L 832 379"/>
+    <path d="M 980 379 L 1020 379"/>
+  </g>
+
+  <g>
+    <rect x="338" y="552" width="442" height="96" rx="8" fill="#E8DCCC" stroke="#D8D2C8"/>
+    <text x="360" y="584" fill="#B85B3C" font-family="IBM Plex Mono, monospace" font-size="12" letter-spacing="1.2">DETERMINISTIC WHAT-IF</text>
+    <text x="360" y="616" fill="#1F1F1F" font-family="Inter, sans-serif" font-size="16" font-weight="600">Proposed actions are calculated, never executed.</text>
+    <text x="360" y="638" fill="#6F7480" font-family="Inter, sans-serif" font-size="13">Application code returns consequences; an AI client may explain them.</text>
+    <path d="M 780 600 C 892 600, 940 506, 1020 436" fill="none" stroke="#6F7480" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+  </g>
+
+  <g font-family="IBM Plex Mono, monospace" font-size="12">
+    <circle cx="76" cy="688" r="5" fill="#6B7F6B"/>
+    <text x="92" y="692" fill="#6F7480">state: private use</text>
+    <line x1="250" y1="688" x2="282" y2="688" stroke="#B85B3C" stroke-width="2"/>
+    <text x="294" y="692" fill="#6F7480">correctness boundary</text>
+    <circle cx="506" cy="688" r="5" fill="#2563EB"/>
+    <text x="522" y="692" fill="#6F7480">technical / AI boundary</text>
+    <text x="955" y="692" fill="#1F1F1F" font-weight="600">NO TRADE EXECUTION</text>
+  </g>
+</svg>

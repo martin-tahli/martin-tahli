@@ -182,3 +182,22 @@ Findavia establishes a shorter main narrative with optional technical depth. Kee
 Use the reusable `content/TechnicalDetail.astro` component with a unique `id`, short `index`, and descriptive `title`. It uses semantic `details` and `summary`, defaults closed, and needs no client JavaScript. Verify keyboard opening/closing, expanded content accessibility, and reflow. Do not hide important qualifications or the only account of Martin's role inside it.
 
 When approved real media exist, the shared case header may use a 5/7 text/media split at desktop widths. Mobile reads title, summary, metadata, then image. Without media it remains text-led. Images must be local, optimized, meaningfully described, and labelled with their capture context. A crop must not fabricate or misrepresent UI. The project collection supplies the same evidence to Home and Work rather than duplicating content.
+
+---
+
+## Approved refinement — correctness-first flagship variant (2026-09-30)
+
+Flagship case studies may share the same global shell without sharing the same narrative sequence. Treasury establishes a correctness-and-boundaries-first variant beside Findavia's product/workflow-first structure.
+
+For Treasury and similar data-sensitive systems:
+
+- lead with the domain trust problem rather than a feature inventory
+- use a truthful system/data-flow visual as the primary project image when a real screenshot would expose private data
+- show source → normalization → reconciliation → product model → bounded interface as the core technical story
+- keep deterministic application responsibilities separate from AI interpretation
+- make freshness, partial data, unavailable data, and other uncertainty states visible when they are materially part of the design
+- keep dated verification evidence explicit and do not turn test totals into timeless coverage claims
+- preserve the shared case-study header, typography, metadata, technical-detail component, accessibility behavior, and restrained Warm Mono visual language
+
+The purpose is controlled variety: each flagship should reveal the engineering problem that actually defines it instead of being forced through one reusable storytelling template.
+
