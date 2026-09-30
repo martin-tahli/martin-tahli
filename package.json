@@ -37,7 +37,7 @@
     "check": "astro check",
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
-    "format:check": "prettier --write src/content/projects/treasury.mdx tests/e2e/treasury.spec.ts && git diff -- src/content/projects/treasury.mdx tests/e2e/treasury.spec.ts && exit 1",
+    "format:check": "prettier --check .",
     "test": "node --experimental-strip-types --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
     "verify": "npm run format:check && npm run lint && npm run check && npm test && npm run build && npm run test:e2e && npm run test:fixtures",

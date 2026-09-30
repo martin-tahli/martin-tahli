@@ -152,9 +152,7 @@ test.describe('Treasury case study', () => {
     });
     try {
       const page = await context.newPage();
-      await page.goto(
-        'http://127.0.0.1:4321' + withBase(route, site.base),
-      );
+      await page.goto('http://127.0.0.1:4321' + withBase(route, site.base));
       await expect(page.locator('.case-study-flow')).toHaveCount(2);
       const detail = page.locator('#treasury-correctness-detail');
       await detail.locator('summary').click();
